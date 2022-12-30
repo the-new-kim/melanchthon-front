@@ -1,6 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-}
 
-module.exports = nextConfig
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "melanchthon.s3.eu-central-1.amazonaws.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
+};
+
+module.exports = nextConfig;
