@@ -11,21 +11,22 @@ export default function GlobalMenu({
   currentPageCategory,
 }: IGlobalMenuProps) {
   return (
-    <ul className="flex justify-around text-center">
+    <ul className="flex justify-around text-center absolute top-0 left-0 w-full">
       {globalMenu.links.map((link) => (
-        <li className="bg-red-200 w-full" key={link.id}>
-          <div className="w-full h-3">
-            {link.global_category.data.attributes.title ===
-              currentPageCategory && (
-              <div className="w-full h-full bg-red-300" />
-            )}
-          </div>
+        <li className="w-full" key={link.id}>
           <Link
             href={
               link.global_category.data.attributes.homepage.data.attributes.url
             }
           >
-            {link.global_category.data.attributes.title}
+            <div className="w-full h-3">
+              {link.global_category.data.attributes.title ===
+                currentPageCategory && (
+                <div className="w-full h-full bg-[#B6983B]" />
+              )}
+            </div>
+
+            <div>{link.global_category.data.attributes.title}</div>
           </Link>
         </li>
       ))}

@@ -1,30 +1,40 @@
 import Blocks from "@components/blocks";
 import Layout from "@components/layout";
-import { getLocales, getPageData, getPagePaths, getPages } from "@libs/strapi";
+import { getPageData, getPagePaths } from "@libs/strapi";
 import { IGlobal, IPage } from "@libs/types";
-import { Inter } from "@next/font/google";
+
 import { GetStaticProps } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-const inter = Inter({ subsets: ["latin"] });
-
-interface IHomeProps {
+interface IPageProps {
   pageData: IPage;
   globalData: IGlobal;
 }
 
-export default function Home({ pageData, globalData }: IHomeProps) {
+export default function Page({ pageData, globalData }: IPageProps) {
+  const router = useRouter();
+
   return (
     <Layout
-      mainMenu={pageData.attributes.global_category.data.attributes.mainMenu}
+      mainMenu={pageData.attributes.global_category.data?.attributes.mainMenu}
       globalMenu={globalData.attributes.globalMenu}
       currentPageCategory={
-        pageData.attributes.global_category.data.attributes.title
+        pageData.attributes.global_category.data?.attributes.title
       }
     >
-      <h1>{pageData.attributes.title}</h1>
       {pageData.attributes.blocks && (
         <Blocks blocks={pageData.attributes.blocks} />
       )}
+      <ul className="fixed left-0 top-0 bg-red-400 z-50">
+        {pageData.attributes.localizations.data.map((data) => (
+          <li key={data.id}>
+            <Link href={data.attributes.url} locale={data.attributes.locale}>
+              {data.attributes.locale}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </Layout>
   );
 }
@@ -38,12 +48,12 @@ export async function getStaticPaths() {
   };
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params) {
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
+  if (!params || !locale) {
     return { props: {} };
   }
 
-  const { pageData, globalData } = await getPageData(params.slug);
+  const { pageData, globalData } = await getPageData(locale, params.slug);
 
   return { props: { pageData, globalData } };
 };

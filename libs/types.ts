@@ -114,14 +114,7 @@ export interface ILink {
   };
 }
 
-export interface ILinkWrapper {
-  id: number;
-  label: string;
-  externalUrl: string;
-  openInNewTab: boolean;
-  page: {
-    data: IPage;
-  };
+export interface ILinkWrapper extends ILink {
   subLinks: ILink[];
 }
 
@@ -152,5 +145,18 @@ export interface IGlobal {
   };
   localizations: {
     data: ILocalization[];
+  };
+}
+
+export interface INewsArticle {
+  id: number;
+  attributes: {
+    title: string;
+    slug: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    locale: string;
+    description: string;
   };
 }

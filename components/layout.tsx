@@ -1,7 +1,7 @@
 import { IGlobalMenu, IMainMenu } from "@libs/types";
 import { ReactNode } from "react";
 import GlobalMenu from "./globalMenu";
-import { MainMenu } from "./mainMenu";
+import { MainMenu } from "./mainMenu/index";
 
 interface ILayoutProps {
   children: ReactNode;
@@ -21,7 +21,7 @@ export default function Layout({
         <MainMenu logo={mainMenu.logo.data} links={mainMenu.links} />
       )}
       <main className="grid grid-cols-12">
-        <div className="col-start-3 col-span-10 bg-red-100 p-5 pt-0">
+        <div className="col-start-3 col-span-10 relative">
           {globalMenu && (
             <GlobalMenu
               globalMenu={globalMenu}
