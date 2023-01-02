@@ -1,6 +1,12 @@
 import Blocks from "@components/blocks";
 import Layout from "@components/layout";
-import { getPageData, getPagePaths } from "@libs/strapi";
+import {
+  getMatchedPostType,
+  getPageData,
+  getPagePaths,
+  getPostData,
+  getPostPaths,
+} from "@libs/strapi";
 import { IGlobal, IPage } from "@libs/types";
 
 import { GetStaticProps } from "next";
@@ -40,7 +46,11 @@ export default function Page({ pageData, globalData }: IPageProps) {
 }
 
 export async function getStaticPaths() {
-  const paths = await getPagePaths();
+  const pagePaths = await getPagePaths();
+  const newsPaths = await getPostPaths("news-articles");
+
+  const paths = [...pagePaths, ...newsPaths];
+  // const paths = pagePaths;
 
   return {
     paths,
@@ -53,7 +63,17 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     return { props: {} };
   }
 
-  const { pageData, globalData } = await getPageData(locale, params.slug);
+  const apiName = await getMatchedPostType(locale, params.slug);
 
+  if (apiName !== "pages") {
+    const { pageData, globalData } = await getPostData(
+      locale,
+      apiName,
+      params.slug
+    );
+    return { props: { pageData, globalData } };
+  }
+
+  const { pageData, globalData } = await getPageData(locale, params.slug);
   return { props: { pageData, globalData } };
 };

@@ -75,6 +75,9 @@ export interface IGlobalCategory {
     locale: string;
     mainMenu: IMainMenu;
     homepage: { data: IPage };
+    events: { data: IPage };
+    exhibitions: { data: IPage };
+    news_articles: { data: IPage };
   };
 }
 export interface IPage {
@@ -148,7 +151,7 @@ export interface IGlobal {
   };
 }
 
-export interface INewsArticle {
+export interface IPost {
   id: number;
   attributes: {
     title: string;
@@ -158,5 +161,15 @@ export interface INewsArticle {
     publishedAt: string;
     locale: string;
     description: string;
+    global_category: { data: IGlobalCategory };
   };
 }
+
+export interface INewsArticle extends IPost {}
+
+export type TPostApiNameTypes = "news-articles" | "exhibitions" | "events";
+export type TApiNameTypes =
+  | "pages"
+  | "news-articles"
+  | "exhibitions"
+  | "events";
