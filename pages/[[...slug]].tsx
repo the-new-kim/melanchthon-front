@@ -1,25 +1,40 @@
 import Blocks from "@components/blocks";
 import Layout from "@components/layout";
 import {
-  getMatchedPostType,
+  getGlobalData,
+  getApiName,
   getPageData,
   getPagePaths,
   getPostData,
   getPostPaths,
 } from "@libs/strapi";
-import { IGlobal, IPage } from "@libs/types";
+import { IBlock, IGlobal, IPage, TApiNameTypes } from "@libs/types";
 
 import { GetStaticProps } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 interface IPageProps {
   pageData: IPage;
   globalData: IGlobal;
+  apiName: TApiNameTypes;
 }
 
-export default function Page({ pageData, globalData }: IPageProps) {
-  const router = useRouter();
+export default function Page({ pageData, globalData, apiName }: IPageProps) {
+  const [blocks, setBlocks] = useState<IBlock[]>([]);
+
+  useEffect(() => {
+    setBlocks(
+      pageData.attributes.blocks.map((block) =>
+        block.__component === "blocks.post"
+          ? {
+              ...block,
+              global_category: pageData.attributes.global_category,
+            }
+          : block
+      )
+    );
+  }, [pageData]);
 
   return (
     <Layout
@@ -29,9 +44,7 @@ export default function Page({ pageData, globalData }: IPageProps) {
         pageData.attributes.global_category.data?.attributes.title
       }
     >
-      {pageData.attributes.blocks && (
-        <Blocks blocks={pageData.attributes.blocks} />
-      )}
+      {blocks && <Blocks blocks={blocks} />}
       <ul className="fixed left-0 top-0 bg-red-400 z-50">
         {pageData.attributes.localizations.data.map((data) => (
           <li key={data.id}>
@@ -48,8 +61,15 @@ export default function Page({ pageData, globalData }: IPageProps) {
 export async function getStaticPaths() {
   const pagePaths = await getPagePaths();
   const newsPaths = await getPostPaths("news-articles");
+  const eventsPaths = await getPostPaths("events");
+  const exhibitionPaths = await getPostPaths("exhibitions");
 
-  const paths = [...pagePaths, ...newsPaths];
+  const paths = [
+    ...pagePaths,
+    ...newsPaths,
+    ...eventsPaths,
+    ...exhibitionPaths,
+  ];
   // const paths = pagePaths;
 
   return {
@@ -63,17 +83,18 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     return { props: {} };
   }
 
-  const apiName = await getMatchedPostType(locale, params.slug);
+  const apiName = await getApiName(locale, params.slug);
+  const globalData = await getGlobalData(locale);
 
-  if (apiName !== "pages") {
-    const { pageData, globalData } = await getPostData(
+  if (apiName !== "pages" && params.slug?.length) {
+    const pageData = await getPostData(
       locale,
       apiName,
-      params.slug
+      params.slug[params.slug.length - 1]
     );
-    return { props: { pageData, globalData } };
+    return { props: { pageData, globalData, apiName } };
   }
 
-  const { pageData, globalData } = await getPageData(locale, params.slug);
-  return { props: { pageData, globalData } };
+  const pageData = await getPageData(locale, params.slug);
+  return { props: { pageData, globalData, apiName } };
 };

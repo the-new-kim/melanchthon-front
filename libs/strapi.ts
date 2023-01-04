@@ -1,14 +1,7 @@
 import qs from "qs";
-import {
-  IGlobalCategory,
-  ILocale,
-  IPage,
-  IPost,
-  TApiNameTypes,
-  TPostApiNameTypes,
-} from "./types";
+import { IGlobalCategory, ILocale, IPage, IPost, TApiNameTypes } from "./types";
 
-const STRAPI_BASE_URL =
+export const STRAPI_BASE_URL =
   process.env.STRAPI_BASE_URL || "http://localhost:1337/api/";
 
 export const getLocales = async () => {
@@ -63,30 +56,6 @@ export const getPagePaths = async () => {
   return paths;
 };
 
-export const getPage = async (
-  locale: string,
-  slug: string,
-  populate: string | object
-) => {
-  const query = qs.stringify(
-    {
-      locale,
-      filters: {
-        url: { $eq: slug },
-      },
-      populate,
-    },
-    {
-      encodeValuesOnly: true, // prettify URL
-    }
-  );
-  const { data } = await (
-    await fetch(`${STRAPI_BASE_URL}pages?${query}`)
-  ).json();
-  if (!data) return null;
-  return data[0];
-};
-
 export const getGlobalData = async (locale: string) => {
   const query = qs.stringify(
     {
@@ -124,27 +93,30 @@ export const slugToPath = (slug?: string[] | string) => {
 };
 
 export const getPageData = async (locale: string, slug?: string[] | string) => {
-  // const locales = await getLocales();
-
-  let pageData: IPage | null = null;
-  let globalData = null;
-
-  const populate = {
-    seo: "*",
-    global_category: {
+  const query = qs.stringify(
+    {
+      locale,
+      filters: {
+        url: { $eq: slugToPath(slug) },
+      },
       populate: {
-        mainMenu: {
+        seo: "*",
+        global_category: {
           populate: {
-            logo: { populate: "*" },
-            links: {
+            mainMenu: {
               populate: {
-                page: {
-                  populate: "url",
-                },
-                subLinks: {
+                logo: { populate: "*" },
+                links: {
                   populate: {
                     page: {
                       populate: "url",
+                    },
+                    subLinks: {
+                      populate: {
+                        page: {
+                          populate: "url",
+                        },
+                      },
                     },
                   },
                 },
@@ -152,25 +124,27 @@ export const getPageData = async (locale: string, slug?: string[] | string) => {
             },
           },
         },
+
+        localizations: {
+          populate: "*",
+        },
+        blocks: {
+          populate: "*",
+        },
       },
     },
-
-    localizations: {
-      populate: "*",
-    },
-    blocks: {
-      populate: "*",
-    },
-  };
-
-  pageData = await getPage(locale, slugToPath(slug), populate);
-
-  globalData = await getGlobalData(locale);
-
-  return { pageData, globalData };
+    {
+      encodeValuesOnly: true, // prettify URL
+    }
+  );
+  const { data } = await (
+    await fetch(`${STRAPI_BASE_URL}pages?${query}`)
+  ).json();
+  if (!data) return null;
+  return data[0];
 };
 
-export const getPosts = async (locale: string, apiName: TPostApiNameTypes) => {
+export const getPosts = async (locale: string, apiName: TApiNameTypes) => {
   const query = qs.stringify(
     {
       locale,
@@ -196,7 +170,7 @@ export const getPosts = async (locale: string, apiName: TPostApiNameTypes) => {
   return data;
 };
 
-export const getPostPaths = async (apiName: TPostApiNameTypes) => {
+export const getPostPaths = async (apiName: TApiNameTypes) => {
   const locales = await getLocales();
   let allPages: IPost[] = [];
 
@@ -263,10 +237,7 @@ export const getGlobalCategories = async (locale: string) => {
   return data;
 };
 
-export const getMatchedPostType = async (
-  locale: string,
-  slug?: string | string[]
-) => {
+export const getApiName = async (locale: string, slug?: string | string[]) => {
   let apiName: TApiNameTypes = "pages";
   const currentPath = slugToPath(slug);
   const globalCategories: IGlobalCategory[] = await getGlobalCategories(locale);
@@ -274,7 +245,7 @@ export const getMatchedPostType = async (
   globalCategories.forEach((category) => {
     const eventRoot = category.attributes.events.data?.attributes.url + "/";
     const exhibitionRoot =
-      category.attributes.news_articles.data?.attributes.url + "/";
+      category.attributes.exhibitions.data?.attributes.url + "/";
     const newsRoot =
       category.attributes.news_articles.data?.attributes.url + "/";
 
@@ -286,11 +257,10 @@ export const getMatchedPostType = async (
   return apiName;
 };
 
-export const getPost = async (
+export const getPostData = async (
   locale: string,
-  slug: string,
-  populate: string | object,
-  apiName: TApiNameTypes
+  apiName: TApiNameTypes,
+  slug: string
 ) => {
   const query = qs.stringify(
     {
@@ -298,7 +268,39 @@ export const getPost = async (
       filters: {
         slug: { $eq: slug },
       },
-      populate,
+      populate: {
+        seo: "*",
+        global_category: {
+          populate: {
+            mainMenu: {
+              populate: {
+                logo: { populate: "*" },
+                links: {
+                  populate: {
+                    page: {
+                      populate: "url",
+                    },
+                    subLinks: {
+                      populate: {
+                        page: {
+                          populate: "url",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+
+        localizations: {
+          populate: "*",
+        },
+        blocks: {
+          populate: "*",
+        },
+      },
     },
     {
       encodeValuesOnly: true, // prettify URL
@@ -308,59 +310,21 @@ export const getPost = async (
   const { data } = await (
     await fetch(`${STRAPI_BASE_URL}${apiName}?${query}`)
   ).json();
+
   if (!data) return null;
+
   return data[0];
 };
 
-export const getPostData = async (
-  locale: string,
-  apiName: TApiNameTypes,
-  slug?: string[] | string
+export const getPostsByCategoryId = async (
+  postType: TApiNameTypes,
+  id: number
 ) => {
-  // const locales = await getLocales();
+  const json = await (
+    await fetch(
+      `${STRAPI_BASE_URL}${postType}?filters[global_category][id]=${id}&populate=*`
+    )
+  ).json();
 
-  let pageData: IPage | null = null;
-  let globalData = null;
-
-  const populate = {
-    seo: "*",
-    global_category: {
-      populate: {
-        mainMenu: {
-          populate: {
-            logo: { populate: "*" },
-            links: {
-              populate: {
-                page: {
-                  populate: "url",
-                },
-                subLinks: {
-                  populate: {
-                    page: {
-                      populate: "url",
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-
-    localizations: {
-      populate: "*",
-    },
-    blocks: {
-      populate: "*",
-    },
-  };
-
-  slug = slug?.length ? slug[slug.length - 1] : "";
-
-  pageData = await getPost(locale, slug, populate, apiName);
-
-  globalData = await getGlobalData(locale);
-
-  return { pageData, globalData };
+  return json.data;
 };

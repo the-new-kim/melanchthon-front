@@ -167,7 +167,6 @@ export interface IPost {
 
 export interface INewsArticle extends IPost {}
 
-export type TPostApiNameTypes = "news-articles" | "exhibitions" | "events";
 export type TApiNameTypes =
   | "pages"
   | "news-articles"
