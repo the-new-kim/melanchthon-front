@@ -2,7 +2,7 @@ import StrapiImage from "@components/strapiImage";
 import { INewsArticle } from "@libs/types";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import LinesEllipsis from "react-lines-ellipsis";
+// import LinesEllipsis from "react-lines-ellipsis";
 
 interface INewsProps {
   newsArticles: INewsArticle[];
@@ -26,14 +26,14 @@ export default function News({ newsArticles }: INewsProps) {
                   />
                 </div>
                 <h5 className="underline">{article.attributes.title}</h5>
-                <LinesEllipsis
+                {/* <LinesEllipsis
                   className="font-serif mb-1"
                   text={article.attributes.description || ""}
                   maxLine="3"
                   ellipsis="..."
                   trimRight
                   basedOn="letters"
-                />
+                /> */}
                 <div className="text-right">Read More</div>
               </Link>
             </li>
@@ -42,6 +42,7 @@ export default function News({ newsArticles }: INewsProps) {
       ) : (
         <div>No news</div>
       )}
+      <Link href="/">HOME</Link>
     </>
   );
 }

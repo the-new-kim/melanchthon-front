@@ -91,9 +91,11 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
       apiName,
       params.slug[params.slug.length - 1]
     );
+
     return { props: { pageData, globalData, apiName } };
   }
 
   const pageData = await getPageData(locale, params.slug);
+
   return { props: { pageData, globalData, apiName } };
 };

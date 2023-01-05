@@ -1,8 +1,7 @@
 import qs from "qs";
 import { IGlobalCategory, ILocale, IPage, IPost, TApiNameTypes } from "./types";
 
-export const STRAPI_BASE_URL =
-  process.env.STRAPI_BASE_URL || "http://localhost:1337/api/";
+export const STRAPI_BASE_URL = process.env.STRAPI_BASE_URL;
 
 export const getLocales = async () => {
   const locales = (await (
