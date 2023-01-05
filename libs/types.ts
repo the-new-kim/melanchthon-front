@@ -165,7 +165,52 @@ export interface IPost {
   };
 }
 
-export interface INewsArticle extends IPost {}
+export interface INewsArticle extends IPost {
+  attributes: {
+    title: string;
+    slug: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    locale: string;
+    description: string;
+    global_category: { data: IGlobalCategory };
+    mainImage: { data: IImage };
+  };
+}
+
+export interface IEvent extends IPost {
+  attributes: {
+    title: string;
+    slug: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    locale: string;
+    description: string;
+    global_category: { data: IGlobalCategory };
+    mainImage: { data: IImage };
+    eventDate: string;
+    location: string;
+  };
+}
+
+export interface IExhibition extends IPost {
+  attributes: {
+    title: string;
+    slug: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    locale: string;
+    description: string;
+    global_category: { data: IGlobalCategory };
+    mainImage: { data: IImage };
+    dateFrom: string;
+    dateTo: string;
+    location: string;
+  };
+}
 
 export type TApiNameTypes =
   | "pages"

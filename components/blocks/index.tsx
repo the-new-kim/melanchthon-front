@@ -1,13 +1,15 @@
 import { IBlock } from "@libs/types";
 import Editor, { IEditorProps } from "./editor";
-import Post, { IPostProps } from "./post";
+import PostList, { IPostListProps } from "./postList";
 
 const getBlockComponent = ({ __component, ...rest }: IBlock, index: number) => {
   switch (__component) {
     case "blocks.editor":
       return <Editor key={__component + index} {...(rest as IEditorProps)} />;
-    case "blocks.post":
-      return <Post key={__component + index} {...(rest as IPostProps)} />;
+    case "blocks.post-list":
+      return (
+        <PostList key={__component + index} {...(rest as IPostListProps)} />
+      );
 
     default:
       return null;

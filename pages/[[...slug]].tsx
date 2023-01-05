@@ -26,7 +26,7 @@ export default function Page({ pageData, globalData, apiName }: IPageProps) {
   useEffect(() => {
     setBlocks(
       pageData.attributes.blocks.map((block) =>
-        block.__component === "blocks.post"
+        block.__component === "blocks.post-list"
           ? {
               ...block,
               global_category: pageData.attributes.global_category,
