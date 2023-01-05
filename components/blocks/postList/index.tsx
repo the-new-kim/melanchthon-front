@@ -28,24 +28,29 @@ export default function PostList({
 
   useEffect(() => {
     (async () => {
-      const data = await getPostsByCategoryId(
-        postType,
-        global_category.data.id
-      );
+      const result = await (
+        await fetch(`/api/post/${postType}/${global_category.data.id}`)
+      ).json();
 
-      setPosts(data);
+      setPosts(result.data);
     })();
   }, [postType, global_category]);
 
+  console.log(posts);
+
   return (
-    <BlockLayout>
-      {postType === "news-articles" && (
-        <News newsArticles={posts as INewsArticle[]} />
+    <>
+      {posts && (
+        <BlockLayout>
+          {postType === "news-articles" && (
+            <News newsArticles={posts as INewsArticle[]} />
+          )}
+          {postType === "events" && <Events events={posts as IEvent[]} />}
+          {postType === "exhibitions" && (
+            <Exhibitions exhibitions={posts as IExhibition[]} />
+          )}
+        </BlockLayout>
       )}
-      {postType === "events" && <Events events={posts as IEvent[]} />}
-      {postType === "exhibitions" && (
-        <Exhibitions exhibitions={posts as IExhibition[]} />
-      )}
-    </BlockLayout>
+    </>
   );
 }

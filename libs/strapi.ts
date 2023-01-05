@@ -319,6 +319,10 @@ export const getPostsByCategoryId = async (
   postType: TApiNameTypes,
   id: number
 ) => {
+  console.log(
+    `${STRAPI_BASE_URL}${postType}?filters[global_category][id]=${id}&populate=*`
+  );
+
   const json = await (
     await fetch(
       `${STRAPI_BASE_URL}${postType}?filters[global_category][id]=${id}&populate=*`
