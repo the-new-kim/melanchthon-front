@@ -12,7 +12,6 @@ interface IEventListProps extends IEventsProps {
 }
 
 const EventList = ({ listTitle, events }: IEventListProps) => {
-  console.log(events);
   const { asPath, locale } = useRouter();
 
   return (

@@ -20,8 +20,8 @@ export default function Layout({
       {mainMenu && (
         <MainMenu logo={mainMenu.logo.data} links={mainMenu.links} />
       )}
-      <main className="grid grid-cols-12">
-        <div className="col-start-3 col-span-10 relative">
+      <main className="flex lg:grid lg:grid-cols-12">
+        <div className="col-start-3 col-span-10 relative w-full">
           {globalMenu && (
             <GlobalMenu
               globalMenu={globalMenu}

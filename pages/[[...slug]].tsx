@@ -70,7 +70,6 @@ export async function getStaticPaths() {
     ...eventsPaths,
     ...exhibitionPaths,
   ];
-  // const paths = pagePaths;
 
   return {
     paths,
