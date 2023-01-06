@@ -1,13 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import withHandler from "@libs/server/withHandler";
+import { IPost } from "@libs/types";
 
-export type PostResponse = {
+export type PostsResponse = {
   ok: boolean;
-  data: any;
+  results: IPost[];
 };
 
 async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<PostResponse>
+  res: NextApiResponse<PostsResponse>
 ) {
   const {
     query: { type, id },
@@ -21,8 +23,8 @@ async function handler(
 
   return res.status(200).json({
     ok: true,
-    data: json.data,
+    results: json.data,
   });
 }
 
-export default handler;
+export default withHandler({ methods: ["GET"], handler });

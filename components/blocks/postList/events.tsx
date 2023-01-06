@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 
 interface IEventsProps {
   events: IEvent[];
+  pageUrl: string;
 }
 
 interface IEventListProps extends IEventsProps {
   listTitle: string;
 }
 
-const EventList = ({ listTitle, events }: IEventListProps) => {
+const EventList = ({ listTitle, events, pageUrl }: IEventListProps) => {
   const { asPath, locale } = useRouter();
 
   return (
@@ -38,7 +39,7 @@ const EventList = ({ listTitle, events }: IEventListProps) => {
               )}
             </div>
             <div>
-              <Link href={asPath + "/" + event.attributes.slug}>
+              <Link href={pageUrl + "/" + event.attributes.slug}>
                 <div>{event.attributes.title}</div>
                 <div>{event.attributes.description}</div>
               </Link>
@@ -51,7 +52,7 @@ const EventList = ({ listTitle, events }: IEventListProps) => {
   );
 };
 
-export default function Events({ events }: IEventsProps) {
+export default function Events({ events, pageUrl }: IEventsProps) {
   const { locale } = useRouter();
   const [showing, setShowing] = useState(false);
   const [upcoming, setUpcoming] = useState<IEvent[]>([]);
@@ -83,6 +84,7 @@ export default function Events({ events }: IEventsProps) {
         <EventList
           listTitle={locale === "de" ? "Übersicht" : "Upcoming Events"}
           events={upcoming}
+          pageUrl={pageUrl}
         />
       ) : (
         <EventList
@@ -90,6 +92,7 @@ export default function Events({ events }: IEventsProps) {
             locale === "de" ? "Vergangene Veranstaltungen" : "Past Events"
           }
           events={past}
+          pageUrl={pageUrl}
         />
       )}
     </>

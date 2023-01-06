@@ -4,50 +4,50 @@ import {
   INewsArticle,
   IEvent,
   IExhibition,
-  IPost,
   TApiNameTypes,
 } from "@libs/types";
 import BlockLayout from "../blockLayout";
-import { useEffect, useState } from "react";
-import { getPostsByCategoryId } from "@libs/strapi";
-
 import News from "./news";
 import Events from "./events";
 import Exhibitions from "./exhibitions";
+import useSWR from "swr";
+import { PostsResponse } from "pages/api/posts/[type]/[id]";
 
 export interface IPostListProps extends IBlock {
   postType: TApiNameTypes;
   global_category: { data: IGlobalCategory };
+  pageUrl: string;
 }
 
 export default function PostList({
   postType,
   global_category,
+  pageUrl,
 }: IPostListProps) {
-  const [posts, setPosts] = useState<IPost[]>([]);
+  const { data } = useSWR<PostsResponse>(
+    `/api/posts/${postType}/${global_category.data.id}`
+  );
 
-  useEffect(() => {
-    (async () => {
-      const result = await (
-        await fetch(`/api/post/${postType}/${global_category.data.id}`)
-      ).json();
-
-      setPosts(result.data);
-    })();
-  }, [postType, global_category]);
-
-  console.log(posts);
+  console.log("POST DATA", data);
 
   return (
     <>
-      {posts && (
+      {data?.results && (
         <BlockLayout>
           {postType === "news-articles" && (
-            <News newsArticles={posts as INewsArticle[]} />
+            <News
+              newsArticles={data.results as INewsArticle[]}
+              pageUrl={pageUrl}
+            />
           )}
-          {postType === "events" && <Events events={posts as IEvent[]} />}
+          {postType === "events" && (
+            <Events events={data.results as IEvent[]} pageUrl={pageUrl} />
+          )}
           {postType === "exhibitions" && (
-            <Exhibitions exhibitions={posts as IExhibition[]} />
+            <Exhibitions
+              exhibitions={data.results as IExhibition[]}
+              pageUrl={pageUrl}
+            />
           )}
         </BlockLayout>
       )}

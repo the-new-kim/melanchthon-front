@@ -23,6 +23,10 @@ interface IPageProps {
 export default function Page({ pageData, globalData, apiName }: IPageProps) {
   const [blocks, setBlocks] = useState<IBlock[]>([]);
 
+  console.log("PAGEDATA: ", pageData);
+  console.log("API NAME: ", apiName);
+  console.log("GLOBAL DATA: ", globalData);
+
   useEffect(() => {
     setBlocks(
       pageData.attributes.blocks.map((block) =>
@@ -30,6 +34,7 @@ export default function Page({ pageData, globalData, apiName }: IPageProps) {
           ? {
               ...block,
               global_category: pageData.attributes.global_category,
+              pageUrl: pageData.attributes.url,
             }
           : block
       )

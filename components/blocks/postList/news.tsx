@@ -1,15 +1,14 @@
 import StrapiImage from "@components/strapiImage";
 import { INewsArticle } from "@libs/types";
 import Link from "next/link";
-import { useRouter } from "next/router";
-// import LinesEllipsis from "react-lines-ellipsis";
+import LinesEllipsis from "react-lines-ellipsis";
 
 interface INewsProps {
   newsArticles: INewsArticle[];
+  pageUrl: string;
 }
 
-export default function News({ newsArticles }: INewsProps) {
-  const { asPath } = useRouter();
+export default function News({ newsArticles, pageUrl }: INewsProps) {
   const newsArticlesExist = newsArticles && newsArticles.length;
   return (
     <>
@@ -18,7 +17,7 @@ export default function News({ newsArticles }: INewsProps) {
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {newsArticles.map((article) => (
             <li key={article.id} className="aspect-square">
-              <Link href={asPath + "/" + article.attributes.slug}>
+              <Link href={pageUrl + "/" + article.attributes.slug}>
                 <div className="w-full h-full overflow-hidden relative flex justify-center items-center">
                   <StrapiImage
                     className="object-cover w-full h-full"
@@ -26,14 +25,14 @@ export default function News({ newsArticles }: INewsProps) {
                   />
                 </div>
                 <h5 className="underline">{article.attributes.title}</h5>
-                {/* <LinesEllipsis
+                <LinesEllipsis
                   className="font-serif mb-1"
                   text={article.attributes.description || ""}
                   maxLine="3"
                   ellipsis="..."
                   trimRight
                   basedOn="letters"
-                /> */}
+                />
                 <div className="text-right">Read More</div>
               </Link>
             </li>

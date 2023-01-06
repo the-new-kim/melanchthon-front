@@ -5,13 +5,18 @@ import { useEffect, useState } from "react";
 
 interface IExhibitionsProps {
   exhibitions: IExhibition[];
+  pageUrl: string;
 }
 
 interface IExhibitionListProps extends IExhibitionsProps {
   listTitle: string;
 }
 
-const ExhibitionList = ({ listTitle, exhibitions }: IExhibitionListProps) => {
+const ExhibitionList = ({
+  listTitle,
+  exhibitions,
+  pageUrl,
+}: IExhibitionListProps) => {
   const { asPath, locale } = useRouter();
 
   return (
@@ -42,7 +47,7 @@ const ExhibitionList = ({ listTitle, exhibitions }: IExhibitionListProps) => {
               </span>
             </div>
             <div>
-              <Link href={asPath + "/" + exhibition.attributes.slug}>
+              <Link href={pageUrl + "/" + exhibition.attributes.slug}>
                 <div>{exhibition.attributes.title}</div>
                 <div>{exhibition.attributes.description}</div>
               </Link>
@@ -55,7 +60,10 @@ const ExhibitionList = ({ listTitle, exhibitions }: IExhibitionListProps) => {
   );
 };
 
-export default function Exhibitions({ exhibitions }: IExhibitionsProps) {
+export default function Exhibitions({
+  exhibitions,
+  pageUrl,
+}: IExhibitionsProps) {
   const [showing, setShowing] = useState("current");
   const [upcoming, setUpcoming] = useState<IExhibition[]>([]);
   const [current, setCurrent] = useState<IExhibition[]>([]);
@@ -85,9 +93,17 @@ export default function Exhibitions({ exhibitions }: IExhibitionsProps) {
 
   return (
     <>
-      <ExhibitionList listTitle="Upcoming" exhibitions={upcoming} />
-      <ExhibitionList listTitle="Current" exhibitions={current} />
-      <ExhibitionList listTitle="Past" exhibitions={past} />
+      <ExhibitionList
+        listTitle="Upcoming"
+        exhibitions={upcoming}
+        pageUrl={pageUrl}
+      />
+      <ExhibitionList
+        listTitle="Current"
+        exhibitions={current}
+        pageUrl={pageUrl}
+      />
+      <ExhibitionList listTitle="Past" exhibitions={past} pageUrl={pageUrl} />
     </>
   );
 }
