@@ -1,4 +1,3 @@
-import { ILinkWrapper } from "@libs/types";
 import Link from "next/link";
 
 interface IInternalLinkProps {
@@ -13,10 +12,8 @@ export default function InternalLink({
   openInNewTab,
 }: IInternalLinkProps) {
   return (
-    <li>
-      <Link href={url} target={openInNewTab ? "_blank" : "_self"}>
-        {label}
-      </Link>
-    </li>
+    <Link href={url} target={openInNewTab ? "_blank" : "_self"}>
+      {label}
+    </Link>
   );
 }

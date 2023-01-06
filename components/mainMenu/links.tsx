@@ -1,80 +1,56 @@
 import { ILink, ILinkWrapper } from "@libs/types";
-import { Dispatch, SetStateAction } from "react";
 
 import ExternalLink from "./externalLink";
 import InternalLink from "./internalLink";
 import LinkWrapper from "./linkWrapper";
-
-// const getLinkComponent = (link: ILinkWrapper) => {
-//   const wrapper = link.subLinks.length;
-//   const internalLink = link.page.data;
-//   const externalLink = link.externalUrl;
-
-//   if (wrapper)
-//     return (
-//       <LinkWrapper key={link.id} label={link.label} subLinks={link.subLinks} />
-//     );
-//   if (internalLink)
-//     return (
-//       <InternalLink
-//         key={link.id}
-//         label={link.label}
-//         openInNewTab={link.openInNewTab}
-//         url={link.page.data.attributes.url}
-//       />
-//     );
-//   if (externalLink)
-//     return (
-//       <ExternalLink
-//         key={link.id}
-//         url={link.externalUrl}
-//         label={link.label}
-//         openInNewTab={link.openInNewTab}
-//       />
-//     );
-//   return null;
-// };
+import Slider from "./slider";
 
 interface ILinksProps {
   links?: ILinkWrapper[];
   subLinks?: ILink[];
+  pageId: number;
 }
 
-export default function Links({ links, subLinks }: ILinksProps) {
-  // return <ul>{links.map(getLinkComponent)}</ul>;
+export default function Links({ links, subLinks, pageId }: ILinksProps) {
   if (links)
     return (
       <ul>
-        {links.map((link) => {
+        {links.map((link, index) => {
+          const linkId = `${pageId}${link.label}`;
           const wrapper = link.subLinks.length;
           const internalLink = link.page.data;
           const externalLink = link.externalUrl;
 
           if (wrapper)
             return (
-              <LinkWrapper
-                key={link.id}
-                label={link.label}
-                subLinks={link.subLinks}
-              />
+              <Slider index={index} key={linkId} linkId={linkId}>
+                <LinkWrapper
+                  key={linkId}
+                  label={link.label}
+                  subLinks={link.subLinks}
+                />
+              </Slider>
             );
           if (internalLink)
             return (
-              <InternalLink
-                key={link.id}
-                label={link.label}
-                openInNewTab={link.openInNewTab}
-                url={link.page.data.attributes.url}
-              />
+              <Slider index={index} key={linkId} linkId={linkId}>
+                <InternalLink
+                  label={link.label}
+                  openInNewTab={link.openInNewTab}
+                  url={link.page.data.attributes.url}
+                />
+              </Slider>
             );
           if (externalLink)
             return (
-              <ExternalLink
-                key={link.id}
-                url={link.externalUrl}
-                label={link.label}
-                openInNewTab={link.openInNewTab}
-              />
+              <Slider index={index} key={linkId} linkId={linkId}>
+                <ExternalLink
+                  key={linkId}
+                  url={link.externalUrl}
+                  label={link.label}
+                  openInNewTab={link.openInNewTab}
+                />
+              </Slider>
             );
           return null;
         })}
@@ -84,27 +60,32 @@ export default function Links({ links, subLinks }: ILinksProps) {
   if (subLinks)
     return (
       <ul>
-        {subLinks.map((link) => {
+        {subLinks.map((link, index) => {
+          const linkId = `${pageId}${link.label}`;
           const internalLink = link.page.data;
           const externalLink = link.externalUrl;
 
           if (internalLink)
             return (
-              <InternalLink
-                key={link.id}
-                label={link.label}
-                openInNewTab={link.openInNewTab}
-                url={link.page.data.attributes.url}
-              />
+              <Slider index={index} key={linkId} linkId={linkId}>
+                <InternalLink
+                  key={linkId}
+                  label={link.label}
+                  openInNewTab={link.openInNewTab}
+                  url={link.page.data.attributes.url}
+                />
+              </Slider>
             );
           if (externalLink)
             return (
-              <ExternalLink
-                key={link.id}
-                url={link.externalUrl}
-                label={link.label}
-                openInNewTab={link.openInNewTab}
-              />
+              <Slider index={index} key={linkId} linkId={linkId}>
+                <ExternalLink
+                  key={linkId}
+                  url={link.externalUrl}
+                  label={link.label}
+                  openInNewTab={link.openInNewTab}
+                />
+              </Slider>
             );
           return null;
         })}

@@ -10,15 +10,13 @@ export default function LinkWrapper({ label, subLinks }: ILinkWrapperProps) {
   const router = useRouter();
 
   return (
-    <li>
-      <span
-        className="cursor-pointer"
-        onClick={() => {
-          router.push({ query: { ...router.query, submenu: "showing" } });
-        }}
-      >
-        {label}+
-      </span>
-    </li>
+    <span
+      className="cursor-pointer"
+      onClick={() => {
+        router.push({ query: { ...router.query, submenu: "showing" } });
+      }}
+    >
+      {label}+
+    </span>
   );
 }

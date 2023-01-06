@@ -13,10 +13,8 @@ export default function ExternalLink({
   openInNewTab,
 }: IExternalLinkProps) {
   return (
-    <li>
-      <Link href={url} target={openInNewTab ? "_blank" : "_self"}>
-        {label}
-      </Link>
-    </li>
+    <Link href={url} target={openInNewTab ? "_blank" : "_self"}>
+      {label}
+    </Link>
   );
 }

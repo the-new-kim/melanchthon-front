@@ -17,7 +17,7 @@ const ExhibitionList = ({
   exhibitions,
   pageUrl,
 }: IExhibitionListProps) => {
-  const { asPath, locale } = useRouter();
+  const { locale } = useRouter();
 
   return (
     <div className="mb-10">

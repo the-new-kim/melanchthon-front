@@ -1,4 +1,5 @@
 import { IGlobalMenu } from "@libs/types";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 
 interface IGlobalMenuProps {
@@ -11,7 +12,7 @@ export default function GlobalMenu({
   currentPageCategory,
 }: IGlobalMenuProps) {
   return (
-    <ul className="flex justify-around text-center absolute top-0 left-0 w-full">
+    <ul className="flex justify-around text-center absolute top-0 left-0 w-full z-10">
       {globalMenu.links.map((link) => (
         <li className="w-full" key={link.id}>
           <Link
@@ -22,7 +23,11 @@ export default function GlobalMenu({
             <div className="w-full h-3">
               {link.global_category.data.attributes.title ===
                 currentPageCategory && (
-                <div className="w-full h-full bg-[#B6983B]" />
+                <motion.div
+                  key="globalMenuBar"
+                  layoutId="globalMenuBar"
+                  className="w-full h-full bg-[#B6983B]"
+                />
               )}
             </div>
 

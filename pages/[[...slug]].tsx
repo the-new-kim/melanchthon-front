@@ -23,10 +23,6 @@ interface IPageProps {
 export default function Page({ pageData, globalData, apiName }: IPageProps) {
   const [blocks, setBlocks] = useState<IBlock[]>([]);
 
-  console.log("PAGEDATA: ", pageData);
-  console.log("API NAME: ", apiName);
-  console.log("GLOBAL DATA: ", globalData);
-
   useEffect(() => {
     setBlocks(
       pageData.attributes.blocks.map((block) =>
@@ -50,7 +46,7 @@ export default function Page({ pageData, globalData, apiName }: IPageProps) {
       }
     >
       {blocks && <Blocks blocks={blocks} />}
-      <ul className="fixed left-0 top-0 bg-red-400 z-50">
+      <ul className="fixed right-0 top-0 bg-red-400 z-50">
         {pageData.attributes.localizations.data.map((data) => (
           <li key={data.id}>
             <Link href={data.attributes.url} locale={data.attributes.locale}>

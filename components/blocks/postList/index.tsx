@@ -11,7 +11,8 @@ import News from "./news";
 import Events from "./events";
 import Exhibitions from "./exhibitions";
 import useSWR from "swr";
-import { PostsResponse } from "pages/api/posts/[type]/[id]";
+import { PostsResponse } from "pages/api/posts/[locale]/[type]/[id]";
+import { useRouter } from "next/router";
 
 export interface IPostListProps extends IBlock {
   postType: TApiNameTypes;
@@ -24,11 +25,12 @@ export default function PostList({
   global_category,
   pageUrl,
 }: IPostListProps) {
+  const { locale } = useRouter();
   const { data } = useSWR<PostsResponse>(
-    `/api/posts/${postType}/${global_category.data.id}`
+    `/api/posts/${locale}/${postType}/${global_category.data.id}`
   );
 
-  console.log("POST DATA", data);
+  console.log(data);
 
   return (
     <>

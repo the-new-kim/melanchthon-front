@@ -13,7 +13,7 @@ interface IEventListProps extends IEventsProps {
 }
 
 const EventList = ({ listTitle, events, pageUrl }: IEventListProps) => {
-  const { asPath, locale } = useRouter();
+  const { locale } = useRouter();
 
   return (
     <div className="mb-10">

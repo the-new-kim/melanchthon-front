@@ -2,6 +2,8 @@ import { IGlobalMenu, IMainMenu } from "@libs/types";
 import { ReactNode } from "react";
 import GlobalMenu from "./globalMenu";
 import { MainMenu } from "./mainMenu/index";
+import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 
 interface ILayoutProps {
   children: ReactNode;
@@ -15,6 +17,8 @@ export default function Layout({
   globalMenu,
   currentPageCategory,
 }: ILayoutProps) {
+  const { asPath, locale } = useRouter();
+
   return (
     <>
       {mainMenu && (
@@ -28,7 +32,14 @@ export default function Layout({
               currentPageCategory={currentPageCategory}
             />
           )}
-          {children}
+          <motion.div
+            key={asPath + locale}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {children}
+          </motion.div>
         </div>
       </main>
     </>
