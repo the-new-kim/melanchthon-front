@@ -3,7 +3,7 @@ import useNavToggler from "@libs/client/useNavToggler";
 
 import { IImage, ILink, ILinkWrapper } from "@libs/types";
 import { cls } from "@libs/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Links from "./links";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -21,7 +21,11 @@ export function MainMenu({ logo, links }: IMainMenuProps) {
     HTMLElement
   >();
 
-  const pageId = links[0].page.data.id;
+  const [pageId, setPageId] = useState(links[0].page.data.id);
+
+  useEffect(() => {
+    setPageId(links[0].page.data.id);
+  }, [links]);
 
   return (
     <>

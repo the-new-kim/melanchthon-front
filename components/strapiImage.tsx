@@ -11,9 +11,9 @@ export default function StrapiImage({ image, className }: IStrapiImageProps) {
     <>
       <Image
         className={className}
-        src={image.attributes.formats.small.url}
-        width={image.attributes.formats.small.width}
-        height={image.attributes.formats.small.height}
+        src={image.attributes.url}
+        width={image.attributes.width}
+        height={image.attributes.height}
         alt={image.attributes.alternativeText || image.attributes.name}
         priority
       />
