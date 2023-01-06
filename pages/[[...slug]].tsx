@@ -39,7 +39,7 @@ export default function Page({ pageData, globalData, apiName }: IPageProps) {
 
   return (
     <Layout
-      mainMenu={pageData.attributes.global_category.data?.attributes.mainMenu}
+      pageData={pageData}
       globalMenu={globalData.attributes.globalMenu}
       currentPageCategory={
         pageData.attributes.global_category.data?.attributes.title

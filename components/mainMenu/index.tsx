@@ -1,21 +1,33 @@
 import StrapiImage from "@components/strapiImage";
 import useNavToggler from "@libs/client/useNavToggler";
 
-import { IImage, ILink, ILinkWrapper } from "@libs/types";
+import {
+  IImage,
+  ILink,
+  ILinkWrapper,
+  ILocalization,
+  IMainMenu,
+} from "@libs/types";
 import { cls } from "@libs/utils";
 import { useEffect, useState } from "react";
 import Links from "./links";
 import { AnimatePresence, motion } from "framer-motion";
 
 import Submenu from "./submenu";
+import Link from "next/link";
 
 interface IMainMenuProps {
-  logo: IImage;
-  links: ILinkWrapper[];
+  mainMenu: IMainMenu;
+  localizations: ILocalization[];
 }
 
-export function MainMenu({ logo, links }: IMainMenuProps) {
+export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
+  // const [logo, setLogo] = useState(mainMenu.logo.data);
+  // const [links, setLinks] = useState(mainMenu.links);
+  const logo = mainMenu.logo.data;
+  const links = mainMenu.links;
   const [submenu, setSubmenu] = useState<ILink[] | null>(null);
+
   const { btnRef, menuRef, showing } = useNavToggler<
     HTMLDivElement,
     HTMLElement
@@ -25,13 +37,18 @@ export function MainMenu({ logo, links }: IMainMenuProps) {
 
   useEffect(() => {
     setPageId(links[0].page.data.id);
-  }, [links]);
+  }, [links, mainMenu]);
+
+  // useEffect(() => {
+  //   setLogo(mainMenu.logo.data);
+  //   setLinks(mainMenu.links);
+  // }, [mainMenu]);
 
   return (
     <>
       <AnimatePresence initial={false} mode="wait">
-        <motion.nav
-          key={pageId + "nav"}
+        <nav
+          // key={pageId + "nav"}
           // initial={{ opacity: 0 }}
           // animate={{ opacity: 1 }}
           // exit={{ opacity: 0 }}
@@ -43,27 +60,47 @@ export function MainMenu({ logo, links }: IMainMenuProps) {
         transition-all duration-300
         `}
         >
-          <div
-            className={`bg-blue text-white col-span-12 lg:col-span-2 text-center lg:text-start w-full h-full p-5`}
-          >
-            <motion.div
-              key={pageId + "logo"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ type: "tween", ease: "easeOut" }}
-              className="w-full h-20 overflow-hidden relative flex justify-center items-center mb-5"
-            >
-              <StrapiImage
-                className="object-contain w-full h-full"
-                image={logo}
-              />
-            </motion.div>
-            <Links links={links} pageId={pageId} />
+          <div className="flex flex-col justify-between bg-blue text-white col-span-12 lg:col-span-2 text-center lg:text-start w-full h-full p-5">
+            <div>
+              <motion.div
+                key={logo.id + "logo"}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ type: "tween", ease: "easeOut" }}
+                className="w-full h-20 overflow-hidden relative flex justify-center items-center mb-10 lg:mb-5"
+              >
+                <StrapiImage
+                  className="object-contain w-full h-full"
+                  image={logo}
+                />
+              </motion.div>
+              <Links links={links} pageId={pageId} />
+            </div>
+            <div>
+              <ul className="text-xl lg:text-base">
+                {localizations.map((locale) => (
+                  <motion.li
+                    key={locale.id + "locale"}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ type: "tween", ease: "easeOut" }}
+                  >
+                    <Link
+                      href={locale.attributes.url}
+                      locale={locale.attributes.locale}
+                    >
+                      {locale.attributes.locale}
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* {submenu && <Submenu links={submenu} />} */}
-        </motion.nav>
+        </nav>
       </AnimatePresence>
       <div
         ref={btnRef}

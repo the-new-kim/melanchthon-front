@@ -30,8 +30,6 @@ export default function PostList({
     `/api/posts/${locale}/${postType}/${global_category.data.id}`
   );
 
-  console.log(data);
-
   return (
     <>
       {data?.results && (

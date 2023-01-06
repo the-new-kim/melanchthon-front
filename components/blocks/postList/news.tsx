@@ -41,7 +41,7 @@ export default function News({ newsArticles, pageUrl }: INewsProps) {
                     basedOn="letters"
                   />
                 </div>
-                <div className="text-end">hello</div>
+                <div className="text-end">Read more</div>
               </Link>
             </li>
           ))}
