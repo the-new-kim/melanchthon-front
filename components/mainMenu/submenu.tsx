@@ -5,9 +5,10 @@ import Links from "./links";
 
 interface ISubmenuProps {
   links: ILinkWrapper[] | ILink[];
+  pageId: number;
 }
 
-export default function Submenu({ links }: ISubmenuProps) {
+export default function Submenu({ links, pageId }: ISubmenuProps) {
   const submenuRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -16,7 +17,7 @@ export default function Submenu({ links }: ISubmenuProps) {
       className="relative h-screen bg-red-400 text-white col-span-10 border-white border-l-[1px] p-5"
     >
       <button className="absolute top-0 right-0 p-5">Close</button>
-      <Links subLinks={links} />
+      <Links subLinks={links} pageId={pageId} />
     </div>
   );
 }
