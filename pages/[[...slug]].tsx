@@ -11,7 +11,6 @@ import {
 import { IBlock, IGlobal, IPage, TApiNameTypes } from "@libs/types";
 
 import { GetStaticProps } from "next";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface IPageProps {
@@ -46,15 +45,6 @@ export default function Page({ pageData, globalData, apiName }: IPageProps) {
       }
     >
       {blocks && <Blocks blocks={blocks} />}
-      <ul className="fixed right-0 top-0 bg-red-400 z-50">
-        {pageData.attributes.localizations.data.map((data) => (
-          <li key={data.id}>
-            <Link href={data.attributes.url} locale={data.attributes.locale}>
-              {data.attributes.locale}
-            </Link>
-          </li>
-        ))}
-      </ul>
     </Layout>
   );
 }

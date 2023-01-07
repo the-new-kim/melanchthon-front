@@ -7,14 +7,12 @@ import { useRouter } from "next/router";
 
 interface ILayoutProps {
   children: ReactNode;
-
   globalMenu: IGlobalMenu;
   currentPageCategory: string;
   pageData: IPage;
 }
 export default function Layout({
   children,
-
   globalMenu,
   currentPageCategory,
   pageData,
@@ -34,7 +32,7 @@ export default function Layout({
           localizations={pageData.attributes.localizations.data}
         />
       )}
-      <main className="flex lg:grid lg:grid-cols-12">
+      <main className="flex lg:grid lg:grid-cols-12 overflow-x-hidden">
         <div className="col-start-3 col-span-10 relative w-full">
           {globalMenu && (
             <GlobalMenu

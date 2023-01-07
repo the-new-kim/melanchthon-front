@@ -1,4 +1,3 @@
-import { ILinkWrapper } from "@libs/types";
 import Link from "next/link";
 
 interface IExternalLinkProps {

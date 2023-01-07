@@ -3,7 +3,7 @@ import Image from "next/image";
 
 interface IStrapiImageProps {
   image: IImage;
-  className: string;
+  className?: string;
 }
 
 export default function StrapiImage({ image, className }: IStrapiImageProps) {

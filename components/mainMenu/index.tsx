@@ -1,13 +1,7 @@
 import StrapiImage from "@components/strapiImage";
 import useNavToggler from "@libs/client/useNavToggler";
 
-import {
-  IImage,
-  ILink,
-  ILinkWrapper,
-  ILocalization,
-  IMainMenu,
-} from "@libs/types";
+import { ILink, ILocalization, IMainMenu } from "@libs/types";
 import { cls } from "@libs/utils";
 import { useEffect, useState } from "react";
 import Links from "./links";
@@ -30,7 +24,7 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
 
   const { btnRef, menuRef, showing } = useNavToggler<
     HTMLDivElement,
-    HTMLElement
+    HTMLDivElement
   >();
 
   const [pageId, setPageId] = useState(links[0].page.data.id);
@@ -47,7 +41,7 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
   return (
     <>
       <AnimatePresence initial={false} mode="wait">
-        <nav
+        <div
           // key={pageId + "nav"}
           // initial={{ opacity: 0 }}
           // animate={{ opacity: 1 }}
@@ -60,47 +54,52 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
         transition-all duration-300
         `}
         >
-          <div className="flex flex-col justify-between bg-blue text-white col-span-12 lg:col-span-2 text-center lg:text-start w-full h-full p-5">
-            <div>
-              <motion.div
-                key={logo.id + "logo"}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ type: "tween", ease: "easeOut" }}
-                className="w-full h-20 overflow-hidden relative flex justify-center items-center mb-10 lg:mb-5"
-              >
-                <StrapiImage
-                  className="object-contain w-full h-full"
-                  image={logo}
-                />
-              </motion.div>
-              <Links links={links} pageId={pageId} />
-            </div>
-            <div>
-              <ul className="text-xl lg:text-base">
-                {localizations.map((locale) => (
-                  <motion.li
-                    key={locale.id + "locale"}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ type: "tween", ease: "easeOut" }}
-                  >
-                    <Link
-                      href={locale.attributes.url}
-                      locale={locale.attributes.locale}
+          <nav className="bg-blue text-white col-span-12 lg:col-span-2 text-center lg:text-start w-full h-full p-5">
+            <div className="flex flex-col justify-between w-full h-full">
+              {/* MAIN MENU */}
+              <div>
+                <motion.div
+                  key={logo.id + "logo"}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ type: "tween", ease: "easeOut" }}
+                  className="w-full h-20 overflow-hidden relative flex justify-center items-center mb-10 lg:mb-5"
+                >
+                  <StrapiImage
+                    className="object-contain w-full h-full"
+                    image={logo}
+                  />
+                </motion.div>
+                <Links links={links} pageId={pageId} />
+              </div>
+
+              {/* LOCALIZATIONS */}
+              <div className="py-10">
+                <ul className="text-xl lg:text-base flex justify-center items-center">
+                  {localizations.map((locale) => (
+                    <motion.li
+                      key={locale.id + "locale"}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ type: "tween", ease: "easeOut" }}
                     >
-                      {locale.attributes.locale}
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
+                      <Link
+                        href={locale.attributes.url}
+                        locale={locale.attributes.locale}
+                      >
+                        {locale.attributes.locale}
+                      </Link>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
+          </nav>
 
           {/* {submenu && <Submenu links={submenu} />} */}
-        </nav>
+        </div>
       </AnimatePresence>
       <div
         ref={btnRef}

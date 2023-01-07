@@ -217,3 +217,15 @@ export type TApiNameTypes =
   | "news-articles"
   | "exhibitions"
   | "events";
+
+// export interface ICard {
+//   title: string;
+//   description: string;
+//   image: IImage;
+//   href: string;
+//   meta?: {
+//     [key: string]: string;
+//   }[];
+//   reversed?: boolean;
+//   responsible?: boolean;
+// }
