@@ -10,6 +10,7 @@ interface ICardProps {
   date: string;
   location: string;
   href: string;
+  meta?: { [key: string]: string }[];
 }
 
 export default function Card({
@@ -23,7 +24,6 @@ export default function Card({
   return (
     <Link href={href} className="flex flex-col md:flex-row items-center group">
       {/* IMAGE */}
-
       <div className="md:w-[50%] mb-5 md:mb-0 overflow-hidden">
         <StrapiImage
           image={image}
@@ -32,7 +32,6 @@ export default function Card({
       </div>
 
       {/* TEXT */}
-
       <div className="flex flex-col md:justify-center w-full md:px-10 md:max-w-[50%]">
         {/* TITLE & DATE */}
         <div className="mb-5">
@@ -46,7 +45,6 @@ export default function Card({
         </div>
 
         {/* DESCRIPTION */}
-
         {description && (
           <LinesEllipsis
             className="font-serif mb-1 text-sm"

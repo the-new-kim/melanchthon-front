@@ -36,10 +36,10 @@ const TextColumn = ({ title, description }: ITextColumnProps) => {
   return (
     <div className="flex flex-col justify-between">
       <div>
-        <h5 className="mb-1 inline-block relative">
+        <h4 className="mb-1 inline-block relative">
           {title}
           <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-blue group-hover:w-full transition-all duration-300" />
-        </h5>
+        </h4>
         <LinesEllipsis
           className="font-serif mb-1 text-sm"
           text={description}

@@ -1,6 +1,5 @@
 import GridCard, { IGridCardProps } from "@components/shared/gridCard";
 import { INewsArticle } from "@libs/types";
-import GridLayout from "@components/shared/gridLayout";
 import PageTitle from "@components/shared/pageTitle";
 
 interface INewsProps {
@@ -14,7 +13,7 @@ export default function News({ newsArticles, pageUrl }: INewsProps) {
     <>
       <PageTitle>News</PageTitle>
       {newsArticlesExist ? (
-        <GridLayout>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {newsArticles.map((article) => {
             const props: IGridCardProps = {
               text: {
@@ -31,7 +30,7 @@ export default function News({ newsArticles, pageUrl }: INewsProps) {
               </li>
             );
           })}
-        </GridLayout>
+        </ul>
       ) : (
         <div>No news</div>
       )}

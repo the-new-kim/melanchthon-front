@@ -1,9 +1,10 @@
-import { IGlobalMenu, IMainMenu, IPage } from "@libs/types";
+import { IGlobalMenu, ILink, IMainMenu, IPage } from "@libs/types";
 import { ReactNode, useEffect, useState } from "react";
 import GlobalMenu from "./globalMenu";
 import { MainMenu } from "./mainMenu/index";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import FooterMenu from "./footerMenu";
 
 interface ILayoutProps {
   children: ReactNode;
@@ -19,9 +20,13 @@ export default function Layout({
 }: ILayoutProps) {
   const { asPath, locale } = useRouter();
   const [mainMenu, setMainMenu] = useState<IMainMenu>();
+  const [footerMenu, setFooterMenu] = useState<ILink[]>();
 
   useEffect(() => {
     setMainMenu(pageData.attributes.global_category.data?.attributes.mainMenu);
+    setFooterMenu(
+      pageData.attributes.global_category.data?.attributes.footerMenu?.links
+    );
   }, [pageData]);
 
   return (
@@ -48,6 +53,15 @@ export default function Layout({
           >
             {children}
           </motion.div>
+
+          {footerMenu && (
+            <FooterMenu
+              links={
+                pageData.attributes.global_category.data.attributes.footerMenu
+                  .links
+              }
+            />
+          )}
         </div>
       </main>
     </>

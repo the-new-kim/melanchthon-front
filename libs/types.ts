@@ -74,6 +74,7 @@ export interface IGlobalCategory {
     publishedAt: string;
     locale: string;
     mainMenu: IMainMenu;
+    footerMenu: IFooterMenu;
     homepage: { data: IPage };
     events: { data: IPage };
     exhibitions: { data: IPage };
@@ -125,6 +126,11 @@ export interface IMainMenu {
   id: number;
   logo: { data: IImage };
   links: ILinkWrapper[];
+}
+
+export interface IFooterMenu {
+  id: number;
+  links: ILink[];
 }
 
 export interface IGlobalMenu {
@@ -229,3 +235,8 @@ export type TApiNameTypes =
 //   reversed?: boolean;
 //   responsible?: boolean;
 // }
+
+export interface IButton {
+  label: string;
+  link: string;
+}

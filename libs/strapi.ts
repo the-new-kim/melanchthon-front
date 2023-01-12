@@ -98,44 +98,46 @@ export const getPageData = async (locale: string, slug?: string[] | string) => {
       filters: {
         url: { $eq: slugToPath(slug) },
       },
-      populate: {
-        seo: "*",
-        global_category: {
-          populate: {
-            mainMenu: {
-              populate: {
-                logo: { populate: "*" },
-                links: {
-                  populate: {
-                    page: {
-                      populate: "url",
-                    },
-                    subLinks: {
-                      populate: {
-                        page: {
-                          populate: "url",
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
+      populate: "deep",
+      // populate: {
+      //   seo: "*",
+      //   global_category: {
+      //     populate: {
+      //       mainMenu: {
+      //         populate: {
+      //           logo: { populate: "*" },
+      //           links: {
+      //             populate: {
+      //               page: {
+      //                 populate: "url",
+      //               },
+      //               subLinks: {
+      //                 populate: {
+      //                   page: {
+      //                     populate: "url",
+      //                   },
+      //                 },
+      //               },
+      //             },
+      //           },
+      //         },
+      //       },
+      //     },
+      //   },
 
-        localizations: {
-          populate: "*",
-        },
-        blocks: {
-          populate: "*",
-        },
-      },
+      //   localizations: {
+      //     populate: "*",
+      //   },
+      //   blocks: {
+      //     populate: "deep",
+      //   },
+      // },
     },
     {
       encodeValuesOnly: true, // prettify URL
     }
   );
+
   const { data } = await (
     await fetch(`${STRAPI_BASE_URL}pages?${query}`)
   ).json();

@@ -5,5 +5,5 @@ interface IBlockLayout {
 }
 
 export default function BlockLayout({ children }: IBlockLayout) {
-  return <section className="p-5 pt-20 max-w-5xl">{children}</section>;
+  return <section className="p-5 pt-20">{children}</section>;
 }

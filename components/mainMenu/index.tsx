@@ -1,13 +1,12 @@
 import StrapiImage from "@components/strapiImage";
 import useNavToggler from "@libs/client/useNavToggler";
 
-import { ILink, ILocalization, IMainMenu } from "@libs/types";
+import { ILocalization, IMainMenu } from "@libs/types";
 import { cls } from "@libs/utils";
 import { useEffect, useState } from "react";
 import Links from "./links";
 import { AnimatePresence, motion } from "framer-motion";
 
-import Submenu from "./submenu";
 import Link from "next/link";
 
 interface IMainMenuProps {
@@ -16,11 +15,8 @@ interface IMainMenuProps {
 }
 
 export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
-  // const [logo, setLogo] = useState(mainMenu.logo.data);
-  // const [links, setLinks] = useState(mainMenu.links);
   const logo = mainMenu.logo.data;
   const links = mainMenu.links;
-  const [submenu, setSubmenu] = useState<ILink[] | null>(null);
 
   const { btnRef, menuRef, showing } = useNavToggler<
     HTMLDivElement,
@@ -33,20 +29,10 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
     setPageId(links[0].page.data.id);
   }, [links, mainMenu]);
 
-  // useEffect(() => {
-  //   setLogo(mainMenu.logo.data);
-  //   setLinks(mainMenu.links);
-  // }, [mainMenu]);
-
   return (
     <>
       <AnimatePresence initial={false} mode="wait">
         <div
-          // key={pageId + "nav"}
-          // initial={{ opacity: 0 }}
-          // animate={{ opacity: 1 }}
-          // exit={{ opacity: 0 }}
-          // transition={{ type: "tween", ease: "easeOut" }}
           ref={menuRef}
           className={`fixed top-0 left-0 w-full h-full grid grid-cols-12 pointer-events-none [&>*]:pointer-events-auto z-50
         ${cls(showing ? "visible opacity-100" : "invisible opacity-0")}
@@ -76,7 +62,7 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
 
               {/* LOCALIZATIONS */}
               <div className="py-10">
-                <ul className="text-xl lg:text-base flex justify-center items-center">
+                <ul className="text-base lg:text-sm flex justify-center items-center uppercase">
                   {localizations.map((locale) => (
                     <motion.li
                       key={locale.id + "locale"}
@@ -97,8 +83,6 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
               </div>
             </div>
           </nav>
-
-          {/* {submenu && <Submenu links={submenu} />} */}
         </div>
       </AnimatePresence>
       <div
