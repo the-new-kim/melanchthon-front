@@ -1,9 +1,11 @@
 import SplitText from "@components/typo/splitText";
+import { fadeInVariants } from "@libs/motionVariants";
 import { IBlock, ILink } from "@libs/types";
-import { useInView, Variants, motion, AnimatePresence } from "framer-motion";
+import { Variants, motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import BlockLayout from "./blockLayout";
+import { ArrowRight } from "phosphor-react";
 
 const barVariants: Variants = {
   initial: { x: "-100%" },
@@ -11,15 +13,19 @@ const barVariants: Variants = {
   exit: { x: "100%" },
 };
 
+const arrowVariants: Variants = {
+  initial: { x: "-100%", opacity: 0 },
+  animate: { x: "0%", opacity: 1 },
+  exit: { x: "100%", opacity: 0 },
+};
+
 const BigLink = ({ ...link }: ILink) => {
   const [mouseEnter, setMouseEnter] = useState(false);
-  const ref = useRef(null);
-  const isInView = useInView(ref);
+
   return (
     <li
-      ref={ref}
       key={link.id}
-      className="text-[10vw] lg:text-8xl leading-none mb-1"
+      className="text-[10vw] lg:text-7xl leading-none mb-1 relative flex"
     >
       <Link
         onMouseEnter={() => setMouseEnter(true)}
@@ -42,6 +48,22 @@ const BigLink = ({ ...link }: ILink) => {
           )}
         </AnimatePresence>
       </Link>
+      <div className="h-full flex justify-center items-center relative overflow-hidden">
+        <AnimatePresence>
+          {mouseEnter && (
+            <motion.div
+              key={link.id + "arrow"}
+              variants={arrowVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ type: "tween" }}
+            >
+              <ArrowRight weight="thin" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </li>
   );
 };
@@ -53,11 +75,16 @@ export interface IBigLinksProps extends IBlock {
 export default function BigLinks({ links }: IBigLinksProps) {
   return (
     <BlockLayout>
-      <ul className="bg-blue text-white p-5">
+      <motion.ul
+        variants={fadeInVariants}
+        initial="initial"
+        whileInView="animate"
+        className="bg-blue text-white p-5"
+      >
         {links.map((link) => (
           <BigLink key={link.id} {...link} />
         ))}
-      </ul>
+      </motion.ul>
     </BlockLayout>
   );
 }

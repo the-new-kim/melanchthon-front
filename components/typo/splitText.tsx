@@ -19,7 +19,7 @@ const childTransition = {
 };
 const childVariants: Variants = {
   show: {
-    y: 0,
+    y: "0%",
     transition: childTransition,
   },
   hide: {
@@ -36,21 +36,21 @@ interface ISplitProps {
   text: string;
   scroll?: boolean;
   setState?: Dispatch<SetStateAction<boolean>>;
+  once?: boolean;
 }
 
 export default function SplitText({
   text,
   scroll = false,
   setState,
+  once = false,
 }: ISplitProps) {
   return (
     <motion.span
       variants={parentVariants}
       initial="hide"
-      animate={scroll ? undefined : "show"}
-      exit={scroll ? undefined : "exit"}
-      whileInView={scroll ? "show" : undefined}
-      viewport={{ once: true }}
+      whileInView="show"
+      viewport={{ once }}
       className="flex w-fit"
     >
       {text.split("").map((letter, index) => (

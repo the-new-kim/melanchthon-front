@@ -240,3 +240,14 @@ export interface IButton {
   label: string;
   link: string;
 }
+
+export interface IPerson {
+  id: number;
+  attributes: {
+    email: string;
+    image: { data: IImage };
+    name: string;
+    position: string;
+    tel: string;
+  };
+}

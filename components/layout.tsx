@@ -38,22 +38,23 @@ export default function Layout({
         />
       )}
       <main className="flex lg:grid lg:grid-cols-12 overflow-x-hidden">
-        <div className="col-start-3 col-span-10 relative w-full">
-          {globalMenu && (
-            <GlobalMenu
-              globalMenu={globalMenu}
-              currentPageCategory={currentPageCategory}
-            />
-          )}
-          <motion.div
-            key={asPath + locale}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            {children}
-          </motion.div>
-
+        <div className="col-start-3 col-span-10 relative w-full min-h-screen flex flex-col justify-between">
+          <div>
+            {globalMenu && (
+              <GlobalMenu
+                globalMenu={globalMenu}
+                currentPageCategory={currentPageCategory}
+              />
+            )}
+            <motion.div
+              key={asPath + locale}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {children}
+            </motion.div>
+          </div>
           {footerMenu && (
             <FooterMenu
               links={
