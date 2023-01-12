@@ -3,7 +3,7 @@ import { fadeInVariants } from "@libs/motionVariants";
 import { IBlock, ILink } from "@libs/types";
 import { Variants, motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BlockLayout from "./blockLayout";
 import { ArrowRight } from "phosphor-react";
 
