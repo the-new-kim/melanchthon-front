@@ -1,7 +1,7 @@
 import { IGlobalMenu, ILink, IMainMenu, IPage } from "@libs/types";
 import { ReactNode, useEffect, useState } from "react";
 import GlobalMenu from "./globalMenu";
-import { MainMenu } from "./mainMenu/index";
+import { MainMenu } from "./mainMenu";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import FooterMenu from "./footerMenu";

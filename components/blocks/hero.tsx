@@ -14,16 +14,16 @@ export default function Hero({ title, description, image }: IHeroProps) {
   return (
     <BlockLayout className="w-full h-full min-h-screen relative flex flex-col justify-center items-center py-20 px-5">
       <motion.h2
-        className="bg-blue text-white p-3 mb-5"
+        className="bg-blue text-white p-3 mb-5 max-w-4xl"
         variants={fadeInVariants}
-        custom={2}
+        custom={5}
       >
         {title}
       </motion.h2>
       <motion.p
         variants={fadeInVariants}
-        custom={3}
-        className="bg-blue text-white p-3"
+        custom={10}
+        className="bg-blue text-white p-3 max-w-5xl"
       >
         {description}
       </motion.p>

@@ -1,5 +1,6 @@
 import { IBlock } from "@libs/types";
 import BigLinks, { IBigLinksProps } from "./bigLinks";
+import Cta from "./cta";
 import Editor, { IEditorProps } from "./editor";
 import Hero, { IHeroProps } from "./hero";
 import ImageCarousel, { IImageCarouselProps } from "./imageCarousel";
@@ -34,6 +35,8 @@ const getBlockComponent = ({ __component, ...rest }: IBlock, index: number) => {
       );
     case "blocks.team":
       return <Team key={__component + index} {...(rest as any)} />;
+    case "blocks.cta":
+      return <Cta key={__component + index} {...(rest as any)} />;
 
     default:
       return null;

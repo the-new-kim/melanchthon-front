@@ -3,11 +3,12 @@ import useNavToggler from "@libs/client/useNavToggler";
 
 import { ILocalization, IMainMenu } from "@libs/types";
 import { cls } from "@libs/utils";
-import { useEffect, useState } from "react";
-import Links from "./links";
+
 import { AnimatePresence, motion } from "framer-motion";
 
 import Link from "next/link";
+import { fadeInVariants } from "@libs/motionVariants";
+import { useRouter } from "next/router";
 
 interface IMainMenuProps {
   mainMenu: IMainMenu;
@@ -15,6 +16,7 @@ interface IMainMenuProps {
 }
 
 export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
+  const { asPath } = useRouter();
   const logo = mainMenu.logo.data;
   const links = mainMenu.links;
 
@@ -22,12 +24,6 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
     HTMLDivElement,
     HTMLDivElement
   >();
-
-  const [pageId, setPageId] = useState(links[0].page.data.id);
-
-  useEffect(() => {
-    setPageId(links[0].page.data.id);
-  }, [links, mainMenu]);
 
   return (
     <>
@@ -44,6 +40,7 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
             <div className="flex flex-col justify-between w-full h-full">
               {/* MAIN MENU */}
               <div>
+                {/* LOGO */}
                 <motion.div
                   key={logo.id + "logo"}
                   initial={{ opacity: 0 }}
@@ -57,7 +54,30 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
                     image={logo}
                   />
                 </motion.div>
-                <Links links={links} pageId={pageId} />
+                {/* LINKS */}
+                <ul>
+                  {links.map((link, index) => (
+                    <motion.li
+                      className="text-2xl mb-3 lg:text-xl lg:mb-0"
+                      key={link.id}
+                      variants={fadeInVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="initial"
+                      custom={index}
+                    >
+                      <Link
+                        href={link.href}
+                        target={link.target}
+                        className={`${cls(
+                          asPath === link.href ? "text-green" : "text-white"
+                        )} transition-colors duration-300`}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.li>
+                  ))}
+                </ul>
               </div>
 
               {/* LOCALIZATIONS */}
@@ -72,7 +92,7 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
                       transition={{ type: "tween", ease: "easeOut" }}
                     >
                       <Link
-                        href={locale.attributes.url}
+                        href={locale.attributes.slug}
                         locale={locale.attributes.locale}
                       >
                         {locale.attributes.locale}

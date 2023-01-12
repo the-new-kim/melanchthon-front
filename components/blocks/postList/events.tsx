@@ -6,6 +6,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import PageTitle from "@components/shared/pageTitle";
 import SectionTitle from "@components/shared/sectionTitle";
+import CtaCard from "@components/shared/ctaCard";
+import LinesEllipsis from "react-lines-ellipsis";
+import Link from "next/link";
 
 interface IEventsProps {
   events: IEvent[];
@@ -59,7 +62,43 @@ export default function Events({ events, pageUrl }: IEventsProps) {
 
               return (
                 <li key={event.id} className="mb-20">
-                  <Card {...props} />
+                  <CtaCard image={props.image}>
+                    {/* TITLE & DATE */}
+                    <div className="mb-5">
+                      <h3>{props.title}</h3>
+                      {(props.date || props.location) && (
+                        <div className="font-serif">
+                          {props.date && (
+                            <span className="mr-3">{props.date}</span>
+                          )}
+                          {props.location && <span>{props.location}</span>}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* DESCRIPTION */}
+                    {props.description && (
+                      <LinesEllipsis
+                        className="font-serif mb-1 text-sm"
+                        text={props.description}
+                        maxLine="5"
+                        ellipsis="..."
+                        trimRight
+                        basedOn="letters"
+                      />
+                    )}
+
+                    {props.href && (
+                      <span className="mt-2">
+                        <Link
+                          className="border-blue border-[1px] px-1 py-1"
+                          href={props.href}
+                        >
+                          Read More
+                        </Link>
+                      </span>
+                    )}
+                  </CtaCard>
                 </li>
               );
             })}
@@ -76,10 +115,9 @@ export default function Events({ events, pageUrl }: IEventsProps) {
           <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {past.map((event) => {
               const props: IGridCardProps = {
-                text: {
-                  title: event.attributes.title,
-                  description: event.attributes.description,
-                },
+                title: event.attributes.title,
+                description: event.attributes.description,
+
                 href: pageUrl + "/" + event.attributes.slug,
                 image: event.attributes.mainImage.data,
               };

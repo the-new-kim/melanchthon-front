@@ -3,10 +3,10 @@ import Layout from "@components/layout";
 import {
   getGlobalData,
   getApiName,
-  getPageData,
   getPagePaths,
-  getPostData,
+  getPageData,
   getPostPaths,
+  slugToPath,
 } from "@libs/strapi";
 import { IBlock, IGlobal, IPage, TApiNameTypes } from "@libs/types";
 
@@ -20,6 +20,10 @@ interface IPageProps {
 }
 
 export default function Page({ pageData, globalData, apiName }: IPageProps) {
+  // console.log("PAGEDATA:", pageData);
+  // console.log("GLOBALDATA:", globalData);
+  // return <div>hello</div>;
+
   const [blocks, setBlocks] = useState<IBlock[]>([]);
 
   useEffect(() => {
@@ -29,7 +33,7 @@ export default function Page({ pageData, globalData, apiName }: IPageProps) {
           ? {
               ...block,
               global_category: pageData.attributes.global_category,
-              pageUrl: pageData.attributes.url,
+              pageUrl: pageData.attributes.slug,
             }
           : block
       )
@@ -77,16 +81,16 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const globalData = await getGlobalData(locale);
 
   if (apiName !== "pages" && params.slug?.length) {
-    const pageData = await getPostData(
+    const pageData = await getPageData(
       locale,
-      apiName,
-      params.slug[params.slug.length - 1]
+      params.slug[params.slug.length - 1],
+      apiName
     );
 
     return { props: { pageData, globalData, apiName } };
   }
 
-  const pageData = await getPageData(locale, params.slug);
+  const pageData = await getPageData(locale, slugToPath(params.slug));
 
   return { props: { pageData, globalData, apiName } };
 };

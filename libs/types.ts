@@ -1,3 +1,5 @@
+export type TLocaleTypes = "de" | "en";
+
 export interface ILocale {
   id: number;
   name: string;
@@ -60,8 +62,8 @@ export interface ILocalization {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    locale: string;
-    url: string;
+    locale: TLocaleTypes;
+    slug: string;
   };
 }
 
@@ -72,7 +74,7 @@ export interface IGlobalCategory {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    locale: string;
+    locale: TLocaleTypes;
     mainMenu: IMainMenu;
     footerMenu: IFooterMenu;
     homepage: { data: IPage };
@@ -88,8 +90,8 @@ export interface IPage {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    locale: string;
-    url: string;
+    locale: TLocaleTypes;
+    slug: string;
     blocks: IBlock[];
     seo: ISEO;
     localizations: {
@@ -111,11 +113,8 @@ export interface IInternalLink {
 export interface ILink {
   id: number;
   label: string;
-  externalUrl: string;
-  openInNewTab: boolean;
-  page: {
-    data: IPage;
-  };
+  href: string;
+  target: string;
 }
 
 export interface ILinkWrapper extends ILink {
@@ -149,7 +148,7 @@ export interface IGlobal {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    locale: string;
+    locale: TLocaleTypes;
     globalMenu: IGlobalMenu;
   };
   localizations: {
@@ -165,7 +164,7 @@ export interface IPost {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    locale: string;
+    locale: TLocaleTypes;
     description: string;
     global_category: { data: IGlobalCategory };
   };
@@ -178,7 +177,7 @@ export interface INewsArticle extends IPost {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    locale: string;
+    locale: TLocaleTypes;
     description: string;
     global_category: { data: IGlobalCategory };
     mainImage: { data: IImage };
@@ -192,7 +191,7 @@ export interface IEvent extends IPost {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    locale: string;
+    locale: TLocaleTypes;
     description: string;
     global_category: { data: IGlobalCategory };
     mainImage: { data: IImage };
@@ -208,7 +207,7 @@ export interface IExhibition extends IPost {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    locale: string;
+    locale: TLocaleTypes;
     description: string;
     global_category: { data: IGlobalCategory };
     mainImage: { data: IImage };

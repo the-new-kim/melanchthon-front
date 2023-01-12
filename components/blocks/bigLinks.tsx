@@ -1,4 +1,3 @@
-import SplitText from "@components/typo/splitText";
 import { fadeInVariants } from "@libs/motionVariants";
 import { IBlock, ILink } from "@libs/types";
 import { Variants, motion, AnimatePresence } from "framer-motion";
@@ -6,8 +5,9 @@ import Link from "next/link";
 import { useState } from "react";
 import BlockLayout from "./blockLayout";
 import { ArrowRight } from "phosphor-react";
+import { cls } from "@libs/utils";
 
-const barVariants: Variants = {
+const underlineVariants: Variants = {
   initial: { x: "-100%" },
   animate: { x: "0%" },
   exit: { x: "100%" },
@@ -19,26 +19,36 @@ const arrowVariants: Variants = {
   exit: { x: "100%", opacity: 0 },
 };
 
-const BigLink = ({ ...link }: ILink) => {
+interface IBigLinkProps extends ILink {
+  index: number;
+}
+
+const BigLink = ({ ...link }: IBigLinkProps) => {
   const [mouseEnter, setMouseEnter] = useState(false);
 
   return (
     <li
       key={link.id}
-      className="text-[10vw] lg:text-7xl leading-none mb-1 relative flex"
+      className={`${cls(
+        link.index === 0 ? "" : "mt-3"
+      )} text-lg sm:text-3xl lg:text-5xl leading-none relative flex items-center`}
+      // className="text-[10vw] lg:text-7xl leading-none mb-1 relative flex"
     >
       <Link
         onMouseEnter={() => setMouseEnter(true)}
         onMouseLeave={() => setMouseEnter(false)}
-        href={link.page.data?.attributes.url}
+        href={link.href}
         className="relative inline-flex overflow-hidden"
       >
-        <SplitText text={link.label} scroll />
+        {link.label}
+        {/* <div className="absolute w-full h-[1px] bottom-0 left-0 bg-white" /> */}
+
+        {/* UNDER LINE */}
         <AnimatePresence>
           {mouseEnter && (
             <motion.div
-              key={link.id + "bar"}
-              variants={barVariants}
+              key={link.id + "underline"}
+              variants={underlineVariants}
               initial="initial"
               animate="animate"
               exit="exit"
@@ -48,7 +58,13 @@ const BigLink = ({ ...link }: ILink) => {
           )}
         </AnimatePresence>
       </Link>
-      <div className="h-full flex justify-center items-center relative overflow-hidden">
+
+      {/* <div className="md:hidden ml-1">
+        <ArrowRight weight="thin" />
+      </div> */}
+
+      {/* ARROW */}
+      <div className="h-full flex justify-center items-center overflow-hidden ml-1">
         <AnimatePresence>
           {mouseEnter && (
             <motion.div
@@ -81,8 +97,8 @@ export default function BigLinks({ links }: IBigLinksProps) {
         whileInView="animate"
         className="bg-blue text-white p-5"
       >
-        {links.map((link) => (
-          <BigLink key={link.id} {...link} />
+        {links.map((link, index) => (
+          <BigLink key={link.id} {...link} index={index} />
         ))}
       </motion.ul>
     </BlockLayout>

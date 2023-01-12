@@ -66,7 +66,7 @@ export default function SplitText({
               index === text.length - 1 && setState && setState(true)
             }
           >
-            {letter === " " ? "_" : letter}
+            {letter === " " ? "'" : letter}
           </motion.span>
         </span>
       ))}

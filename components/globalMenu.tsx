@@ -1,5 +1,5 @@
 import { IGlobalMenu } from "@libs/types";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 interface IGlobalMenuProps {
@@ -18,8 +18,15 @@ export default function GlobalMenu({
 
         if (linkData)
           return (
-            <li className="w-full" key={link.id}>
-              <Link href={linkData.attributes.homepage.data.attributes.url}>
+            <li
+              className="flex"
+              style={{ width: `${100 / globalMenu.links.length}%` }}
+              key={link.id}
+            >
+              <Link
+                href={linkData.attributes.homepage.data.attributes.slug}
+                className="h-fit w-full pb-3"
+              >
                 <div className="w-full h-3">
                   {linkData.attributes.title === currentPageCategory && (
                     <motion.div
@@ -30,7 +37,7 @@ export default function GlobalMenu({
                   )}
                 </div>
 
-                <div>{linkData.attributes.title}</div>
+                <h5>{linkData.attributes.title}</h5>
               </Link>
             </li>
           );

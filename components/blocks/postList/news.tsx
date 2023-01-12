@@ -16,10 +16,9 @@ export default function News({ newsArticles, pageUrl }: INewsProps) {
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {newsArticles.map((article) => {
             const props: IGridCardProps = {
-              text: {
-                title: article.attributes.title,
-                description: article.attributes.description || "",
-              },
+              title: article.attributes.title,
+              description: article.attributes.description || "",
+
               image: article.attributes.mainImage.data,
               href: pageUrl + "/" + article.attributes.slug,
             };

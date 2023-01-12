@@ -43,9 +43,23 @@ export const getPagePaths = async () => {
     allPages = [...allPages, ...page];
   }
 
+  const emptyTextToSlush = (text: string) => {
+    if (text === "") return "/";
+    return text;
+  };
+
   const paths: { params: { slug: string[] }; locale: string }[] = allPages.map(
     (page) => {
-      const slug = page.attributes.url
+      const pageLocale = page.attributes.locale;
+
+      // const localizedSlug =
+      //   pageLocale === "de"
+      //     ? page.attributes.slug
+      //     : emptyTextToSlush(
+      //         page.attributes.slug.replace(`/${pageLocale}`, "")
+      //       );
+
+      const slug = page.attributes.slug
         .split("/")
         .filter((letter) => letter !== "");
       return { params: { slug }, locale: page.attributes.locale };
@@ -65,7 +79,7 @@ export const getGlobalData = async (locale: string) => {
             links: {
               populate: {
                 global_category: {
-                  populate: { homepage: { populate: "url" } },
+                  populate: { homepage: { populate: "slug" } },
                 },
               },
             },
@@ -89,60 +103,6 @@ export const slugToPath = (slug?: string[] | string) => {
   if (!slug) return "/";
   if (typeof slug !== "string") return "/" + slug.join("/");
   return slug;
-};
-
-export const getPageData = async (locale: string, slug?: string[] | string) => {
-  const query = qs.stringify(
-    {
-      locale,
-      filters: {
-        url: { $eq: slugToPath(slug) },
-      },
-      populate: "deep",
-      // populate: {
-      //   seo: "*",
-      //   global_category: {
-      //     populate: {
-      //       mainMenu: {
-      //         populate: {
-      //           logo: { populate: "*" },
-      //           links: {
-      //             populate: {
-      //               page: {
-      //                 populate: "url",
-      //               },
-      //               subLinks: {
-      //                 populate: {
-      //                   page: {
-      //                     populate: "url",
-      //                   },
-      //                 },
-      //               },
-      //             },
-      //           },
-      //         },
-      //       },
-      //     },
-      //   },
-
-      //   localizations: {
-      //     populate: "*",
-      //   },
-      //   blocks: {
-      //     populate: "deep",
-      //   },
-      // },
-    },
-    {
-      encodeValuesOnly: true, // prettify URL
-    }
-  );
-
-  const { data } = await (
-    await fetch(`${STRAPI_BASE_URL}pages?${query}`)
-  ).json();
-  if (!data) return null;
-  return data[0];
 };
 
 export const getPosts = async (locale: string, apiName: TApiNameTypes) => {
@@ -189,21 +149,21 @@ export const getPostPaths = async (apiName: TApiNameTypes) => {
       if (apiName === "events") {
         const root =
           page.attributes.global_category.data?.attributes.events.data
-            ?.attributes.url;
+            ?.attributes.slug;
 
         slug = root ? root.split("/").filter((letter) => letter !== "") : slug;
       }
       if (apiName === "exhibitions") {
         const root =
           page.attributes.global_category.data?.attributes.exhibitions.data
-            ?.attributes.url;
+            ?.attributes.slug;
 
         slug = root ? root.split("/").filter((letter) => letter !== "") : slug;
       }
       if (apiName === "news-articles") {
         const root =
           page.attributes.global_category.data?.attributes.news_articles.data
-            ?.attributes.url;
+            ?.attributes.slug;
 
         slug = root ? root.split("/").filter((letter) => letter !== "") : slug;
       }
@@ -244,11 +204,11 @@ export const getApiName = async (locale: string, slug?: string | string[]) => {
   const globalCategories: IGlobalCategory[] = await getGlobalCategories(locale);
 
   globalCategories.forEach((category) => {
-    const eventRoot = category.attributes.events.data?.attributes.url + "/";
+    const eventRoot = category.attributes.events.data?.attributes.slug + "/";
     const exhibitionRoot =
-      category.attributes.exhibitions.data?.attributes.url + "/";
+      category.attributes.exhibitions.data?.attributes.slug + "/";
     const newsRoot =
-      category.attributes.news_articles.data?.attributes.url + "/";
+      category.attributes.news_articles.data?.attributes.slug + "/";
 
     if (currentPath.includes(eventRoot)) apiName = "events";
     if (currentPath.includes(exhibitionRoot)) apiName = "exhibitions";
@@ -258,10 +218,10 @@ export const getApiName = async (locale: string, slug?: string | string[]) => {
   return apiName;
 };
 
-export const getPostData = async (
+export const getPageData = async (
   locale: string,
-  apiName: TApiNameTypes,
-  slug: string
+  slug: string,
+  apiName: TApiNameTypes = "pages"
 ) => {
   const query = qs.stringify(
     {
@@ -269,39 +229,7 @@ export const getPostData = async (
       filters: {
         slug: { $eq: slug },
       },
-      populate: {
-        seo: "*",
-        global_category: {
-          populate: {
-            mainMenu: {
-              populate: {
-                logo: { populate: "*" },
-                links: {
-                  populate: {
-                    page: {
-                      populate: "url",
-                    },
-                    subLinks: {
-                      populate: {
-                        page: {
-                          populate: "url",
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-
-        localizations: {
-          populate: "*",
-        },
-        blocks: {
-          populate: "*",
-        },
-      },
+      populate: "deep",
     },
     {
       encodeValuesOnly: true, // prettify URL

@@ -13,19 +13,16 @@ export default function FooterMenu({ links }: IFotterMenuProps) {
   return (
     <footer className="bg-green p-5 mt-10 font-sans font-bold">
       <ul>
-        {links.map(
-          (link) =>
-            link.page.data && (
-              <li
-                key={link.id}
-                className={`${cls(
-                  link.page.data.attributes.url === asPath ? "text-white" : ""
-                )} transition-colors duration-300`}
-              >
-                <Link href={link.page.data.attributes.url}>{link.label}</Link>
-              </li>
-            )
-        )}
+        {links.map((link) => (
+          <li
+            key={link.id}
+            className={`${cls(
+              link.href === asPath ? "text-white" : ""
+            )} transition-colors duration-300`}
+          >
+            <Link href={link.href}>{link.label}</Link>
+          </li>
+        ))}
       </ul>
     </footer>
   );
