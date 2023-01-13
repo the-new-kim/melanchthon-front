@@ -108,10 +108,8 @@ export default function Exhibitions({
           <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {past.map((post) => {
               const props: IGridCardProps = {
-                text: {
-                  title: post.attributes.title,
-                  description: post.attributes.description,
-                },
+                title: post.attributes.title,
+                description: post.attributes.description,
                 href: pageUrl + "/" + post.attributes.slug,
                 image: post.attributes.mainImage.data,
               };

@@ -5,6 +5,7 @@ import { MainMenu } from "./mainMenu";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import FooterMenu from "./footerMenu";
+import ScrollToTopButton from "./scrollToTopButton";
 
 interface ILayoutProps {
   children: ReactNode;
@@ -64,6 +65,7 @@ export default function Layout({
             />
           )}
         </div>
+        <ScrollToTopButton />
       </main>
     </>
   );

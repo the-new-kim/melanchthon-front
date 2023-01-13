@@ -1,11 +1,12 @@
 import { IBlock } from "@libs/types";
 import BigLinks, { IBigLinksProps } from "./bigLinks";
-import Cta from "./cta";
+import Cta, { ICtaProps } from "./cta";
+import Dock, { IDockProps } from "./dock";
 import Editor, { IEditorProps } from "./editor";
 import Hero, { IHeroProps } from "./hero";
 import ImageCarousel, { IImageCarouselProps } from "./imageCarousel";
 import PostList, { IPostListProps } from "./postList";
-import Team from "./team";
+import Team, { ITeamProps } from "./team";
 import Timeline, { ITimelineProps } from "./timeline";
 
 const getBlockComponent = ({ __component, ...rest }: IBlock, index: number) => {
@@ -34,9 +35,11 @@ const getBlockComponent = ({ __component, ...rest }: IBlock, index: number) => {
         <BigLinks key={__component + index} {...(rest as IBigLinksProps)} />
       );
     case "blocks.team":
-      return <Team key={__component + index} {...(rest as any)} />;
+      return <Team key={__component + index} {...(rest as ITeamProps)} />;
     case "blocks.cta":
-      return <Cta key={__component + index} {...(rest as any)} />;
+      return <Cta key={__component + index} {...(rest as ICtaProps)} />;
+    case "blocks.dock":
+      return <Dock key={__component + index} {...(rest as IDockProps)} />;
 
     default:
       return null;

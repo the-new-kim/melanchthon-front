@@ -26,7 +26,7 @@ export default function PostList({
   pageUrl,
 }: IPostListProps) {
   const { locale } = useRouter();
-  const { data, isLoading } = useSWR<PostsResponse>(
+  const { data, isLoading, error } = useSWR<PostsResponse>(
     `/api/posts/${locale}/${postType}/${global_category.data.id}`
   );
 

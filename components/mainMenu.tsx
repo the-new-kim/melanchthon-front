@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { fadeInVariants } from "@libs/motionVariants";
 import { useRouter } from "next/router";
+import { List, X } from "phosphor-react";
 
 interface IMainMenuProps {
   mainMenu: IMainMenu;
@@ -111,7 +112,7 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
         cursor-pointer transition-all duration-300
         "
       >
-        {showing ? "close" : "menu"}
+        {showing ? <X weight="bold" /> : <List weight="bold" />}
       </div>
     </>
   );

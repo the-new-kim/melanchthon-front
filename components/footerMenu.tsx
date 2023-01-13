@@ -11,7 +11,7 @@ export default function FooterMenu({ links }: IFotterMenuProps) {
   const { asPath } = useRouter();
 
   return (
-    <footer className="bg-green p-5 mt-10 font-sans font-bold">
+    <footer className="bg-green p-3 pb-20 mt-10 font-sans font-bold">
       <ul>
         {links.map((link) => (
           <li

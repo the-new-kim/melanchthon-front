@@ -14,7 +14,7 @@ export default function BlockLayout({ children, className }: IBlockLayout) {
       variants={fadeInVariants}
       initial="initial"
       whileInView="animate"
-      className={cls(className ? className : "p-5 pt-20")}
+      className={cls(className ? className : "p-3 pt-20")}
     >
       {children}
     </motion.section>
