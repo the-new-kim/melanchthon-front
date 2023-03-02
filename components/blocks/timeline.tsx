@@ -30,10 +30,11 @@ export interface ITimelineProps extends IBlock {
 
 interface ISectionProps {
   item: ITimelineItem;
+  currentItemId: number;
   setcurrentItemId: Dispatch<SetStateAction<number>>;
 }
 
-const Section = ({ item, setcurrentItemId }: ISectionProps) => {
+const Section = ({ item, currentItemId, setcurrentItemId }: ISectionProps) => {
   const centerRef = useRef(null);
   const centerInView = useInView(centerRef);
 
@@ -81,7 +82,7 @@ const Section = ({ item, setcurrentItemId }: ISectionProps) => {
       {/* BGIMAGE */}
       {item.image && item.image.data && (
         <AnimatePresence>
-          {centerInView && (
+          {currentItemId === item.id && (
             <motion.div
               key={item.label + "bg"}
               initial={{ opacity: 0 }}
@@ -119,6 +120,10 @@ export default function Timeline({ intro, items }: ITimelineProps) {
     setNavOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    setcurrentItemId(items[0].id);
+  }, [items]);
+
   return (
     <div className="w-full px-3" ref={ref}>
       <section className="flex flex-col relative justify-center items-center w-full h-screen">
@@ -152,7 +157,7 @@ export default function Timeline({ intro, items }: ITimelineProps) {
                 />
               </button>
 
-              {/* BODY (LIST)  */}
+              {/* NAV LIST  */}
               <ul className="p-2">
                 {items.map((item, index) => (
                   <li
@@ -183,6 +188,7 @@ export default function Timeline({ intro, items }: ITimelineProps) {
           <Section
             item={item}
             key={item.id}
+            currentItemId={currentItemId}
             setcurrentItemId={setcurrentItemId}
           />
         ))}

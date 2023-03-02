@@ -1,25 +1,43 @@
 import StrapiImage from "@components/strapiImage";
 import useNavToggler from "@libs/client/useNavToggler";
 
-import { ILocalization, IMainMenu } from "@libs/types";
+import { IGlobalMenu, ILocalization, IMainMenu } from "@libs/types";
 import { cls } from "@libs/utils";
 
 import { AnimatePresence, motion } from "framer-motion";
 
 import Link from "next/link";
-import { fadeInVariants } from "@libs/motionVariants";
+import { fadeInVariants, slideRightIn } from "@libs/motionVariants";
 import { useRouter } from "next/router";
 import { List, X } from "phosphor-react";
+import { useEffect, useState } from "react";
 
 interface IMainMenuProps {
   mainMenu: IMainMenu;
   localizations: ILocalization[];
+  globalMenu: IGlobalMenu;
+  currentPageCategory: string;
 }
 
-export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
+export function MainMenu({
+  mainMenu,
+  localizations,
+  globalMenu,
+  currentPageCategory,
+}: IMainMenuProps) {
   const { asPath } = useRouter();
   const logo = mainMenu.logo.data;
   const links = mainMenu.links;
+  const [logoHref, setLogoHref] = useState<string>("/");
+
+  useEffect(() => {
+    setLogoHref(
+      globalMenu.links.find(
+        (link) =>
+          link.global_category.data.attributes.title === currentPageCategory
+      )?.global_category.data.attributes.homepage.data.attributes.slug || "/"
+    );
+  }, [globalMenu]);
 
   const { btnRef, menuRef, showing } = useNavToggler<
     HTMLDivElement,
@@ -31,7 +49,7 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
       <AnimatePresence initial={false} mode="wait">
         <div
           ref={menuRef}
-          className={`fixed top-0 left-0 w-full h-full grid grid-cols-12 pointer-events-none [&>*]:pointer-events-auto z-50
+          className={`fixed top-0 left-0 w-full h-full grid grid-cols-12 pointer-events-none [&>*]:pointer-events-auto z-40
         ${cls(showing ? "visible opacity-100" : "invisible opacity-0")}
         lg:visible lg:opacity-100
         transition-all duration-300
@@ -44,16 +62,18 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
                 {/* LOGO */}
                 <motion.div
                   key={logo.id + "logo"}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ type: "tween", ease: "easeOut" }}
+                  variants={fadeInVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="initial"
                   className="w-full h-20 overflow-hidden relative flex justify-center items-center mb-10 lg:mb-5"
                 >
-                  <StrapiImage
-                    className="object-contain w-full h-full"
-                    image={logo}
-                  />
+                  <Link href={logoHref}>
+                    <StrapiImage
+                      className="object-contain w-full h-full"
+                      image={logo}
+                    />
+                  </Link>
                 </motion.div>
                 {/* LINKS */}
                 <ul>
@@ -61,11 +81,11 @@ export function MainMenu({ mainMenu, localizations }: IMainMenuProps) {
                     <motion.li
                       className="text-2xl mb-3 lg:text-xl lg:mb-0"
                       key={link.id}
-                      variants={fadeInVariants}
+                      variants={slideRightIn}
                       initial="initial"
                       animate="animate"
                       exit="initial"
-                      custom={index}
+                      custom={index + 1}
                     >
                       <Link
                         href={link.href}

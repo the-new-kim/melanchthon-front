@@ -36,9 +36,11 @@ export default function Layout({
         <MainMenu
           mainMenu={mainMenu}
           localizations={pageData.attributes.localizations.data}
+          globalMenu={globalMenu}
+          currentPageCategory={currentPageCategory}
         />
       )}
-      <main className="flex lg:grid lg:grid-cols-12 overflow-x-hidden">
+      <main className="flex lg:grid lg:grid-cols-12">
         <div className="col-start-3 col-span-10 relative w-full min-h-screen flex flex-col justify-between">
           <div>
             {globalMenu && (
@@ -65,8 +67,8 @@ export default function Layout({
             />
           )}
         </div>
-        <ScrollToTopButton />
       </main>
+      <ScrollToTopButton />
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { IBlock } from "@libs/types";
+import AudioGuide, { IAudioGuideProps } from "./audioGuide";
 import BigLinks, { IBigLinksProps } from "./bigLinks";
 import Cta, { ICtaProps } from "./cta";
 import Dock, { IDockProps } from "./dock";
@@ -40,6 +41,10 @@ const getBlockComponent = ({ __component, ...rest }: IBlock, index: number) => {
       return <Cta key={__component + index} {...(rest as ICtaProps)} />;
     case "blocks.dock":
       return <Dock key={__component + index} {...(rest as IDockProps)} />;
+    case "blocks.audio-guide":
+      return (
+        <AudioGuide key={__component + index} {...(rest as IAudioGuideProps)} />
+      );
 
     default:
       return null;

@@ -35,6 +35,29 @@ export interface IImage {
   };
 }
 
+export interface IAudio {
+  id: number;
+  attributes: {
+    alternativeText: string;
+    caption: string;
+    createdAt: string;
+    ext: string;
+    formats: string;
+    hash: string;
+    // height: null;
+    mime: string; //"audio/mpeg";
+    name: string; //"D-2_1.mp3";
+    placeholder: string; //null;
+    previewUrl: string; //null;
+    provider: string; //"aws-s3";
+    provider_metadata: string; //null;
+    size: number; // 2578.68;
+    updatedAt: string; //"2023-03-02T00:05:21.872Z";
+    url: string; // "https://melanchthon.s3.eu-central-1.amazonaws.com/D_2_1_74d9e93ab8.mp3";
+    // width: null;
+  };
+}
+
 export interface IMetaSocial {
   description: string;
   image: IImage;
@@ -249,4 +272,11 @@ export interface IPerson {
     position: string;
     tel: string;
   };
+}
+
+export interface IAudioGuideItem {
+  id: number;
+  title: string;
+  audio: { data: IAudio };
+  thumbnail: { data: IImage };
 }

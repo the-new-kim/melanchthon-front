@@ -13,31 +13,37 @@ export interface IHeroProps extends IBlock {
 export default function Hero({ title, description, image }: IHeroProps) {
   return (
     <BlockLayout className="w-full h-full min-h-screen relative flex flex-col justify-center items-center py-20 px-3">
-      <motion.h2
-        className="bg-blue text-white p-3 mb-5 max-w-4xl"
-        variants={fadeInVariants}
-        custom={5}
-      >
-        {title}
-      </motion.h2>
-      <motion.p
-        variants={fadeInVariants}
-        custom={10}
-        className="bg-blue text-white p-3 max-w-5xl"
-      >
-        {description}
-      </motion.p>
-      <motion.div
-        variants={fadeInVariants}
-        custom={0}
-        className="absolute top-0 left-0 w-full h-full min-h-screen -z-10"
-      >
-        <StrapiImage
-          image={image.data}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute top-0 left-0 w-full h-36 bg-gradient-to-b from-white to-transparent" />
-      </motion.div>
+      {title && (
+        <motion.h2
+          className="bg-blue text-white p-3 mb-5 max-w-4xl"
+          variants={fadeInVariants}
+          custom={5}
+        >
+          {title}
+        </motion.h2>
+      )}
+      {description && (
+        <motion.p
+          variants={fadeInVariants}
+          custom={10}
+          className="bg-blue text-white p-3 max-w-5xl"
+        >
+          {description}
+        </motion.p>
+      )}
+      {image && (
+        <motion.div
+          variants={fadeInVariants}
+          custom={0}
+          className="absolute top-0 left-0 w-full h-full min-h-screen -z-10"
+        >
+          <StrapiImage
+            image={image.data}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute top-0 left-0 w-full h-36" />
+        </motion.div>
+      )}
     </BlockLayout>
   );
 }

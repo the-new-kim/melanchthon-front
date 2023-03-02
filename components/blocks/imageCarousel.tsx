@@ -6,6 +6,7 @@ import LinesEllipsis from "react-lines-ellipsis";
 import BlockLayout from "./blockLayout";
 import { AnimatePresence, motion } from "framer-motion";
 import { cls } from "@libs/utils";
+import { fadeInVariants } from "@libs/motionVariants";
 
 export interface IImageCarouselProps extends IBlock {
   images: {
@@ -35,17 +36,17 @@ export default function ImageCarousel({ images }: IImageCarouselProps) {
                   index === currentIndex && (
                     <motion.div
                       key={`${item}${index}`}
-                      initial={{ x: "-100%", opacity: 0 }}
-                      animate={{ x: "0%", opacity: 1 }}
-                      exit={{ x: "100%", opacity: 0 }}
-                      transition={{ type: "tween", duration: 1 }}
+                      variants={fadeInVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="initial"
                       className="w-full h-full absolute top-0 left-0"
                     >
                       <StrapiImage
                         image={item.image.data}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute top-0 left-0 p-5 flex flex-col justify-between items-start h-full w-full">
+                      <div className="absolute top-0 left-0 p-3 lg:p-5 flex flex-col justify-between items-start h-full w-full">
                         <h3 className="bg-blue text-white py-1 px-2 sm:py-2 sm:px-3 mb-10">
                           {item.title}
                         </h3>
@@ -87,13 +88,15 @@ export default function ImageCarousel({ images }: IImageCarouselProps) {
                 index === 0 ? "" : "ml-1"
               )}`}
             >
-              {currentIndex === index && (
-                <motion.div
-                  key="carouselBar"
-                  layoutId="carouselBar"
-                  className="w-full h-full bg-orange absolute top-0 left-0"
-                />
-              )}
+              <AnimatePresence initial={false}>
+                {currentIndex === index && (
+                  <motion.div
+                    key="carouselBar"
+                    layoutId="carouselBar"
+                    className="w-full h-full bg-orange absolute top-0 left-0"
+                  />
+                )}
+              </AnimatePresence>
             </li>
           ))}
         </ul>
