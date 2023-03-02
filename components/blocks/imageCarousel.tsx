@@ -1,7 +1,7 @@
 import StrapiImage from "@components/strapiImage";
 import { IBlock, IButton, IImage } from "@libs/types";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LinesEllipsis from "react-lines-ellipsis";
 import BlockLayout from "./blockLayout";
 import { AnimatePresence, motion } from "framer-motion";
@@ -24,6 +24,22 @@ export default function ImageCarousel({ images }: IImageCarouselProps) {
   const onBtnClick = (index: number) => {
     setCurrentIndex(index);
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => {
+        let newIndex = 0;
+
+        if (prev + 1 < images.length) {
+          newIndex = prev + 1;
+        }
+
+        return newIndex;
+      });
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <BlockLayout>

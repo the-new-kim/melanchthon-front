@@ -2,9 +2,10 @@ import StrapiImage from "@components/strapiImage";
 import useScrolled from "@libs/client/useScrolled";
 import { IBlock, IImage, ILink } from "@libs/types";
 import { cls } from "@libs/utils";
+import { fadeInOutVariants } from "@libs/variants";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { CaretLeft } from "phosphor-react";
+import { CaretDown, CaretLeft } from "phosphor-react";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 interface ITimelineItem {
@@ -115,10 +116,18 @@ export default function Timeline({ intro, items }: ITimelineProps) {
   const isInView = useInView(ref);
   const scrolled = useScrolled(100);
   const [navOpen, setNavOpen] = useState(false);
+  const [navItems, setNavItems] = useState<ITimelineItem[]>([]);
 
   const toggleNavOpen = () => {
     setNavOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const matchedNavItem = items.find((item) => item.id === currentItemId);
+    const matchedNavItems = matchedNavItem ? [matchedNavItem] : [];
+
+    setNavItems(navOpen ? items : matchedNavItems);
+  }, [navOpen, currentItemId]);
 
   useEffect(() => {
     setcurrentItemId(items[0].id);
@@ -131,14 +140,15 @@ export default function Timeline({ intro, items }: ITimelineProps) {
       </section>
       <div className="relative w-full">
         {/* NAV */}
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {isInView && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className={`fixed right-5 top-0 m-auto rounded-lg h-fit flex items-center z-50
-              backdrop-blur-3xl bg-white/10 transition-transform duration-300
+              variants={fadeInOutVariants}
+              initial="fadeOut"
+              animate="fadeIn"
+              exit="fadeOut"
+              className={`fixed right-5 top-0 m-auto rounded-lg h-fit flex flex-col items-center z-50
+              backdrop-blur-3xl bg-white/10 transition-transform duration-300 
               ${cls(
                 scrolled ? "translate-y-3" : "translate-y-10 md:translate-y-20"
               )}
@@ -146,40 +156,48 @@ export default function Timeline({ intro, items }: ITimelineProps) {
             >
               {/* DROP SHADOW */}
               <div className="absolute w-full h-full drop-shadow-2xl bg-white opacity-70 rounded-lg -z-10" />
+
+              {/* NAV LIST  */}
+
+              <ul>
+                {navItems.map((item, index) => (
+                  <motion.li
+                    key={item.id}
+                    variants={fadeInOutVariants}
+                    initial="fadeOut"
+                    animate="fadeIn"
+                    exit="fadeOut"
+                    className="flex justify-center items-center px-3 py-2"
+                  >
+                    <a
+                      href={`#${item.title.toLowerCase().replaceAll(" ", "-")}`}
+                    >
+                      <span className="relative py-1">
+                        {item.title}
+
+                        {currentItemId === item.id && (
+                          <motion.div
+                            className="w-full h-1 bg-orange absolute bottom-0 left-0"
+                            key="underline"
+                            layoutId="underline"
+                          />
+                        )}
+                      </span>
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+
               {/* ARROW */}
 
-              <button className="pl-2" onClick={toggleNavOpen}>
-                <CaretLeft
+              <button className="pb-2" onClick={toggleNavOpen}>
+                <CaretDown
                   weight="bold"
                   className={`${cls(
                     navOpen ? "rotate-180" : "rotate-0"
                   )} transition-transform duration-300 ease-out`}
                 />
               </button>
-
-              {/* NAV LIST  */}
-              <ul className="p-2">
-                {items.map((item, index) => (
-                  <li
-                    key={item.id + "title"}
-                    className="flex justify-center items-center"
-                  >
-                    <a
-                      href={`#${item.title.toLowerCase().replaceAll(" ", "-")}`}
-                      className="relative p-1"
-                    >
-                      <span>{navOpen ? item.title : index + 1}</span>
-                      {currentItemId === item.id && (
-                        <motion.div
-                          className="w-full h-1 bg-orange absolute bottom-0 left-0"
-                          key="underline"
-                          layoutId="underline"
-                        />
-                      )}
-                    </a>
-                  </li>
-                ))}
-              </ul>
             </motion.div>
           )}
         </AnimatePresence>

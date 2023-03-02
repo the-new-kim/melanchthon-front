@@ -54,7 +54,7 @@ export default function AudioGuide({ items }: IAudioGuideProps) {
                 <div className="absolute w-full h-full flex justify-center items-center bg-black opacity-5 " />
               </div>
             </div>
-            <div className="flex justify-center items-center w-full">
+            <div className="flex justify-center items-center w-full whitespace-nowrap mt-1">
               {item.title}
             </div>
           </li>

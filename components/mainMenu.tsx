@@ -49,7 +49,7 @@ export function MainMenu({
       <AnimatePresence initial={false} mode="wait">
         <div
           ref={menuRef}
-          className={`fixed top-0 left-0 w-full h-full grid grid-cols-12 pointer-events-none [&>*]:pointer-events-auto z-40
+          className={`fixed top-0 left-0 w-full h-full grid grid-cols-12 pointer-events-none [&>*]:pointer-events-auto z-40 
         ${cls(showing ? "visible opacity-100" : "invisible opacity-0")}
         lg:visible lg:opacity-100
         transition-all duration-300

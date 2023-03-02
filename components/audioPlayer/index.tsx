@@ -26,7 +26,7 @@ export function AudioPlayer({
 
   const increaseTrack = (increament: number = 1) => {
     const currentTrackIndex = tracks.findIndex(
-      (track) => track === currentTrack
+      (track) => track.src === currentTrack.src
     );
 
     let nextTrackIndex;
